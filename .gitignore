@@ -1,3 +1,13 @@
 .vscode
 venv/
 .env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore generated venue artist files
+data/venue-data/sf/*/artists_*.yaml
+
+# Keep venue configuration
+!data/venue-data/sf/venues.yaml
