@@ -40,7 +40,7 @@ def load_venue_config(config_path: str = "data/venue-data/sf/venues.yaml") -> di
         with open(config_path, 'r') as f:
             return yaml.safe_load(f)
     except Exception as e:
-        print(f"Error loading venue config: {e}")
+        print(f"Error loading venue config {config_path}: {e}")
         return {}
 
 def get_venue_output_dir(venue_key: str, base_dir: str = "data/venue-data/sf") -> str:
