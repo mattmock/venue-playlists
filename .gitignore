@@ -11,3 +11,13 @@ data/venue-data/sf/*/artists_*.yaml
 
 # Keep venue configuration
 !data/venue-data/sf/venues.yaml
+
+# Local development scripts
+scripts/get_spotify_token.py
+
+# Spotify authentication files
+.cache
+.spotify_token
+
+# Generated venue data
+data/venue-data/
