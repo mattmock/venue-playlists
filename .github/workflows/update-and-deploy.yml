@@ -53,13 +53,25 @@ jobs:
       - name: Pull latest changes
         run: git pull origin main
           
-      - name: Setup Ruby
+      - name: Setup Ruby and create Gemfile
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true
+          
+      - name: Create Gemfile
+        run: |
+          echo 'source "https://rubygems.org"' > Gemfile
+          echo 'gem "github-pages", "~> 228"' >> Gemfile
+          echo 'gem "webrick", "~> 1.8"' >> Gemfile
+          
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install
           
       - name: Build Jekyll site
+        env:
+          JEKYLL_ENV: production
         run: bundle exec jekyll build
           
       - name: Upload artifact
