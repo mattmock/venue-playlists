@@ -21,3 +21,7 @@ scripts/get_spotify_token.py
 
 # Generated venue data
 data/venue-data/
+
+# Jekyll output/build directory
+_site/
+.jekyll-cache/
