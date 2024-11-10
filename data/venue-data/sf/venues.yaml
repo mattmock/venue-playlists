@@ -1,24 +1,4 @@
-the-independent:
-  name: The Independent
-  url: https://www.bandsintown.com/v/10001466-the-independent
-  description: "Historic San Francisco venue featuring indie rock and electronic music"
-the-fillmore:
-  name: The Fillmore
-  url: https://www.bandsintown.com/v/10001698-the-fillmore
-  description: "Legendary venue known for psychedelic rock history"
-the-warfield:
-  name: The Warfield
-  url: https://www.bandsintown.com/v/10001685-the-warfield
-  description: "Historic San Francisco venue known for rock music"
-bottom-of-the-hill:
-  name: Bottom of the Hill
-  url: https://www.bandsintown.com/v/10001325-bottom-of-the-hill
-  description: "San Francisco venue known for indie rock and punk music"
-great-american-music-hall:
-  name: Great American Music Hall
-  url: https://www.bandsintown.com/v/10000215-great-american-music-hall
-  description: "Historic San Francisco venue known for rock music"
-the-regency-ballroom:
-  name: The Regency Ballroom
-  url: https://www.bandsintown.com/v/10002004-the-regency-ballroom
-  description: "Historic San Francisco venue known for rock music"
+independent:
+  url: https://www.theindependentsf.com/calendar/
+warfield:
+  url: https://www.thewarfieldtheatre.com/events/
