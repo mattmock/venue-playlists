@@ -7,49 +7,44 @@ A tool for collecting venue events and generating Spotify playlists.
 ### Prerequisites
 - Python 3.8+
 - A Spotify Developer account
+- An OpenAI API key
 
-### Spotify Configuration
-1. Create a Spotify Developer application at https://developer.spotify.com/dashboard
-2. Note your Client ID and Client Secret
-3. Add a redirect URI (e.g., `http://localhost:8888/callback`)
-4. Create a `.env` file in the project root with the following:
-
+### Configuration
+Create a `.env` file:
 ```env
 SPOTIFY_CLIENT_ID=your_client_id
 SPOTIFY_CLIENT_SECRET=your_client_secret
-SPOTIFY_REDIRECT_URI=your_redirect_uri
+SPOTIPY_REDIRECT_URI=http://localhost:8888/callback
+OPENAI_API_KEY=your_openai_api_key
 ```
 
-## Project Structure
+### First-Time Setup
+Run `python scripts/collect_events.py` to authenticate with Spotify. This will:
+- Open a browser window for authorization
+- Save the refresh token to your `.env` file
 
-```
-.
-├── data/
-│   └── venue-data/
-│       └── {city}/
-│           ├── venues.yaml
-│           └── {venue}/
-│               ├── artists_{month}.yaml
-│               └── playlist_{month}.yaml
-└── scripts/
-    ├── collect_events.py
-    ├── generate_playlists.py
-    ├── venue_data/
-    └── playlist_data/
+## Usage
+
+### Collecting Events
+```bash
+python scripts/collect_events.py
 ```
 
-## Code References
+### Generating Playlists
+```bash
+python scripts/generate_playlists.py
+```
 
-Key components of the codebase:
+## Data Structure
 
-### Event Collection
+Each venue needs a config in `data/venue-data/{city}/venues.yaml`:
+```yaml
+venue_key:
+  name: "Venue Name"
+  url: "https://venue-calendar-url.com"
+  scraper: "scraper_type"
+```
 
-Location: `scripts/venue_data/main.py` (lines 18-42)
-
-### Playlist Generation
-
-Location: `scripts/playlist_data/generator.py` (lines 49-77)
-
-### Configuration
-
-Location: `scripts/playlist_data/config.py` (lines 7-18)
+The tool generates:
+1. Monthly artist listings (`artists_{month}.yaml`)
+2. Playlist metadata (`playlist_{month}.yaml`)
