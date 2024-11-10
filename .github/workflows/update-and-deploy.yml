@@ -1,8 +1,8 @@
 name: Update Venue Data and Deploy
 
 on:
-  schedule:
-    - cron: '0 8 * * *'  # Run daily at 8am UTC
+#   schedule:
+#     - cron: '0 8 * * *'  # Run daily at 8am UTC
   workflow_dispatch:      # Allow manual triggers
 
 permissions:
