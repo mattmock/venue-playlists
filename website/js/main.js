@@ -2,24 +2,32 @@ document.addEventListener('DOMContentLoaded', function() {
     loadVenues();
 });
 
+function hasValidPlaylistData(venue) {
+    return venue.months && 
+           venue.months.length > 0 && 
+           venue.months.some(month => month.playlist_url);
+}
+
 async function loadVenues(retries = 3) {
     try {
         const response = await fetch('/data/sf_venues.json');
         if (!response.ok) {
-            if (response.status === 404) {
-                console.error('Venue data file not found');
-                document.getElementById('venue-grid').innerHTML = 
-                    '<div class="error-message">No venue data available</div>';
-                return;
-            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const venues = await response.json();
         
+        // Filter venues to only include those with valid playlist data
+        const venuesWithPlaylists = venues.filter(hasValidPlaylistData);
+        
         const venueGrid = document.getElementById('venue-grid');
         venueGrid.innerHTML = ''; // Clear existing content
         
-        venues.forEach(venue => {
+        if (venuesWithPlaylists.length === 0) {
+            venueGrid.innerHTML = '<div class="error-message">No venues with playlists available</div>';
+            return;
+        }
+        
+        venuesWithPlaylists.forEach(venue => {
             const card = createVenueCard(venue);
             venueGrid.appendChild(card);
         });
@@ -30,11 +38,8 @@ async function loadVenues(retries = 3) {
             return loadVenues(retries - 1);
         }
         console.error('Error loading venues:', error);
-        document.getElementById('venue-grid').innerHTML = `
-            <div class="error-message">
-                Failed to load venue data: ${error.message}
-            </div>
-        `;
+        document.getElementById('venue-grid').innerHTML = 
+            `<div class="error-message">Failed to load venue data: ${error.message}</div>`;
     }
 }
 

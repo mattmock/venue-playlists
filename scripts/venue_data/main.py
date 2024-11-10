@@ -24,28 +24,29 @@ def process_venue(venue_key: str, output_dir: str = "data/venue-data/sf", force:
         # Fetch and process venue data
         html_content: bytes = scraper.fetch_venue_page(venue_key)
         cleaned_text: str = scraper.clean_calendar_text(html_content)
-        print(f"Cleaned text length: {len(cleaned_text)}")
-        print(f"First 200 characters: {cleaned_text[:200]}")
         text_chunks = text_utils.chunk_message(cleaned_text)
-        print(f"Number of text chunks: {len(text_chunks)}")
-        print(f"First chunk length: {len(text_chunks[0])}")
         
         # Extract artists with dates
         extractor = ArtistExtractor()
         artist_events = extractor.process_chunks(text_chunks)
-        print(f"Found {len(artist_events)} total artists for {venue_key}")
         
         # Save results for each month
         for month in months:
-            if force or storage.needs_update(venue_key, month, output_dir):
-                filename = storage.save_artists_to_file(venue_key, artist_events, month, output_dir)
-                output_files.append(filename)
+            month_name = month.split('_')[0].title()
+            month_artists = [ae for ae in artist_events 
+                           if ae.date.strftime('%B').lower() == month.split('_')[0]]
             
+            if month_artists:  # Only save if we have artists for this month
+                filename = storage.save_artists_to_file(venue_key, month_artists, month, output_dir)
+                output_files.append(filename)
+            else:
+                print(f"No artists found for {venue_key} in {month}")
+        
         return output_files
         
     except Exception as e:
         print(f"Error processing venue {venue_key}: {e}")
-        raise
+        return []
 
 if __name__ == "__main__":
     output_files = process_venue("independent")

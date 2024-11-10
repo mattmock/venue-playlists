@@ -5,15 +5,15 @@
     "months": [
       {
         "name": "november_2024",
-        "playlist_url": "https://open.spotify.com/playlist/6vfYlzvQf7xYXjeDjsjG9w"
+        "playlist_url": "https://open.spotify.com/playlist/20Tn3ddJnQ5Cr2UCmTJRpQ"
       },
       {
         "name": "december_2024",
-        "playlist_url": "https://open.spotify.com/playlist/6Z2crTNItaGxGgCg9xwAhF"
+        "playlist_url": "https://open.spotify.com/playlist/6dC28ir8UOe9Okk1UGqcwo"
       },
       {
         "name": "january_2025",
-        "playlist_url": "https://open.spotify.com/playlist/1J61GNZUPj5RTz8tiiBC8b"
+        "playlist_url": "https://open.spotify.com/playlist/1upYrcXpKnCSkPlQJJ6G57"
       }
     ]
   },
@@ -68,6 +68,42 @@
       {
         "name": "january_2025",
         "playlist_url": "https://open.spotify.com/playlist/79u65CFhrEWA4KttpaeRto"
+      }
+    ]
+  },
+  {
+    "id": "great-american-music-hall",
+    "name": "Great American Music Hall",
+    "months": [
+      {
+        "name": "november_2024",
+        "playlist_url": "https://open.spotify.com/playlist/4sl4bO7xfP3tvpBt9xQ8zu"
+      },
+      {
+        "name": "december_2024",
+        "playlist_url": "https://open.spotify.com/playlist/3aEGGmrrNtcEA35ns4hydG"
+      },
+      {
+        "name": "january_2025",
+        "playlist_url": "https://open.spotify.com/playlist/2gK1urRjbbcKzhJbTNAw3X"
+      }
+    ]
+  },
+  {
+    "id": "the-regency-ballroom",
+    "name": "The Regency Ballroom",
+    "months": [
+      {
+        "name": "november_2024",
+        "playlist_url": "https://open.spotify.com/playlist/7s9pJpJ08b4e7CMuOUz8ql"
+      },
+      {
+        "name": "december_2024",
+        "playlist_url": "https://open.spotify.com/playlist/1aRUnFKIgVo9D3LRl9jaSd"
+      },
+      {
+        "name": "january_2025",
+        "playlist_url": "https://open.spotify.com/playlist/456ByESofeBXeCRokJ0Qft"
       }
     ]
   }

@@ -45,6 +45,9 @@ class ArtistExtractor:
                     except ValueError as e:
                         print(f"Error parsing date '{date_str}': {e}")
                         continue
+            print("\nDEBUG: Raw OpenAI response lines:")
+            for line in completion.choices[0].message.content.split("\n"):
+                print(f"  > {line}")
             return artist_events
         except Exception as e:
             print(f"Error extracting artists: {e}")

@@ -63,9 +63,25 @@ def get_last_update_time(venue_key: str, month: str, output_dir: str) -> datetim
 
 def needs_update(venue_key: str, month: str, output_dir: str) -> bool:
     """Check if venue data needs to be updated (older than 24 hours)."""
-    last_update = get_last_update_time(venue_key, month, output_dir)
-    if not last_update:
+    # Check both artist and playlist files
+    artist_file = Path(output_dir) / venue_key / f"artists_{month}.yaml"
+    playlist_file = Path(output_dir) / venue_key / f"playlist_{month}.yaml"
+    
+    # If artist file exists but playlist file doesn't, we need an update
+    if artist_file.exists() and not playlist_file.exists():
         return True
         
-    time_since_update = datetime.now() - last_update
-    return time_since_update.days >= 1
+    # If playlist file exists, check its timestamp
+    if playlist_file.exists():
+        playlist_time = datetime.fromtimestamp(playlist_file.stat().st_mtime)
+        artist_time = datetime.fromtimestamp(artist_file.stat().st_mtime)
+        
+        # If artist file is newer than playlist file, we need an update
+        if artist_time > playlist_time:
+            return True
+            
+        # Check if playlist is older than 24 hours
+        time_since_update = datetime.now() - playlist_time
+        return time_since_update.days >= 1
+        
+    return True  # No playlist file exists, so we need an update
