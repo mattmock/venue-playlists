@@ -1,17 +1,15 @@
-from collect_events import process_city
-from generate_playlists import process_city_playlists
-from build_website_data import build_venue_data
+from venue_data.main import process_venue
+from venue_data.config import VENUES
 import argparse
 
 def update_all(city: str = "sf", force_venue: str = None, force_all: bool = False):
-    # 1. Collect new events
-    process_city(city, force_venue=force_venue, force_all=force_all)
-    
-    # 2. Generate playlists
-    process_city_playlists(city, force_venue=force_venue, force_all=force_all)
-    
-    # 3. Build website data
-    build_venue_data(city)
+    # Process each venue
+    for venue_key in VENUES:
+        if force_venue and venue_key != force_venue:
+            continue
+            
+        print(f"Processing venue: {venue_key}")
+        process_venue(venue_key, force=force_all)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
