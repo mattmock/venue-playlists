@@ -5,9 +5,17 @@ on:
     - cron: '0 8 * * *'  # Run daily at 8am UTC
   workflow_dispatch:      # Allow manual triggers
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       
@@ -22,8 +30,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      - name: Create venue config directory
-        run: mkdir -p data/venue-data/sf
+      - name: Create venue config
+        run: |
+          mkdir -p data/venue-data/sf
+          echo "independent:
+            url: https://www.theindependentsf.com/calendar/
+          warfield:
+            url: https://www.thewarfieldtheatre.com/events/" > data/venue-data/sf/venues.yaml
           
       - name: Update venue data
         env:
@@ -47,12 +60,13 @@ jobs:
           bundler-cache: true
           
       - name: Build Jekyll site
-        run: |
-          bundle install
-          bundle exec jekyll build
+        run: bundle exec jekyll build
+          
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
           
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
+        id: deployment
+        uses: actions/deploy-pages@v4
