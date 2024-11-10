@@ -4,6 +4,7 @@ from venue_data.text_utils import get_next_months
 from playlist_data.generator import PlaylistGenerator
 from playlist_data.storage import save_playlist_info
 import yaml
+import time
 
 def load_artists_for_month(venue_key: str, month: str, city_path: str) -> list:
     """Load artists from venue's monthly YAML file."""
@@ -35,14 +36,19 @@ def process_city_playlists(city: str):
             for artist in artists:
                 tracks = generator.search_artist_top_tracks(artist)
                 all_tracks.extend(tracks)
+                time.sleep(0.5)  # 500ms delay between artist searches
             
             if all_tracks:
                 playlist_url = generator.create_venue_playlist(venue_key, month, all_tracks)
                 if playlist_url:
                     save_playlist_info(venue_key, month, playlist_url, city_path)
                     print(f"Created playlist for {venue_key}: {playlist_url}")
+                    time.sleep(1)  # 1 second delay between playlist creations
 
-if __name__ == "__main__":
+def generate_playlists():
     cities = [d.name for d in Path("data/venue-data").iterdir() if d.is_dir()]
     for city in cities:
-        process_city_playlists(city) 
+        process_city_playlists(city)
+
+if __name__ == "__main__":
+    generate_playlists()

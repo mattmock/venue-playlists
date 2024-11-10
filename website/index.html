@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SF Venue Playlists</title>
+    
+    <!-- HTMX for interactivity -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>SF Venue Playlists</h1>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="venue-grid" class="venue-grid">
+            <!-- Venue cards will be populated here -->
+            <template id="venue-card-template">
+                <div class="venue-card">
+                    <h2 class="venue-name"></h2>
+                    <div class="month-sections">
+                        <!-- Month sections will be populated dynamically -->
+                    </div>
+                </div>
+            </template>
+        </div>
+    </main>
+
+    <footer>
+        <p>Created with ♥️ for SF Music Lovers</p>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html> 
