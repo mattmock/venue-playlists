@@ -10,7 +10,7 @@ function hasValidPlaylistData(venue) {
 
 async function loadVenues(retries = 3) {
     try {
-        const response = await fetch('/data/sf_venues.json');
+        const response = await fetch('./data/sf_venues.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
