@@ -14,22 +14,36 @@ class ArtistExtractor:
     def extract_artists_from_text(self, text: str) -> List[ArtistEvent]:
         """Extract artist names and dates from text using OpenAI."""
         try:
+            print(f"Sending chunk of length {len(text)} to OpenAI")
             completion = self.client.chat.completions.create(
                 messages=[{"role": "user", "content": constants.MESSAGE_PREFIX + text}],
                 model="gpt-3.5-turbo",
             )
+            print(f"OpenAI response: {completion.choices[0].message.content[:200]}")
             
             artist_events = []
+            current_year = datetime.now().year
             for line in completion.choices[0].message.content.split("\n"):
                 if "|" in line:
                     artist, date_str = line.split("|")
                     try:
-                        date = datetime.strptime(date_str.strip(), "%Y-%m-%d")
+                        # Handle "MMM DD" format
+                        date_str = date_str.strip()
+                        if len(date_str) == 6:  # "NOV 09" format
+                            date = datetime.strptime(f"{current_year} {date_str}", "%Y %b %d")
+                            # If date is in the past, assume next year
+                            if date < datetime.now():
+                                date = date.replace(year=current_year + 1)
+                        else:
+                            # Try original YYYY-MM-DD format
+                            date = datetime.strptime(date_str, "%Y-%m-%d")
+                        
                         artist_events.append(ArtistEvent(
                             name=artist.strip(),
                             date=date
                         ))
-                    except ValueError:
+                    except ValueError as e:
+                        print(f"Error parsing date '{date_str}': {e}")
                         continue
             return artist_events
         except Exception as e:

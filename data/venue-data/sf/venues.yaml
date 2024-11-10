@@ -6,3 +6,11 @@ the-fillmore:
   name: The Fillmore
   url: https://www.bandsintown.com/v/10001698-the-fillmore
   description: "Legendary venue known for psychedelic rock history"
+the-warfield:
+  name: The Warfield
+  url: https://www.bandsintown.com/v/10001685-the-warfield
+  description: "Historic San Francisco venue known for rock music"
+bottom-of-the-hill:
+  name: Bottom of the Hill
+  url: https://www.bandsintown.com/v/10001325-bottom-of-the-hill
+  description: "San Francisco venue known for indie rock and punk music"

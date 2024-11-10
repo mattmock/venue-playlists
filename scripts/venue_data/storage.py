@@ -43,3 +43,29 @@ def get_venue_output_dir(venue_key: str, base_dir: str = "data/venue-data/sf") -
     output_dir = f"{base_dir}/{venue_key}"
     os.makedirs(output_dir, exist_ok=True)
     return output_dir 
+
+def get_last_update_time(venue_key: str, month: str, output_dir: str) -> datetime | None:
+    """Get the last update time for a venue's monthly data."""
+    # Check artists file
+    artists_file = Path(output_dir) / venue_key / f"artists_{month}.yaml"
+    if not artists_file.exists():
+        return None
+        
+    try:
+        with open(artists_file) as f:
+            data = yaml.safe_load(f)
+            if data and 'updated' in data:
+                return datetime.fromisoformat(data['updated'])
+    except Exception:
+        return None
+    
+    return None
+
+def needs_update(venue_key: str, month: str, output_dir: str) -> bool:
+    """Check if venue data needs to be updated (older than 24 hours)."""
+    last_update = get_last_update_time(venue_key, month, output_dir)
+    if not last_update:
+        return True
+        
+    time_since_update = datetime.now() - last_update
+    return time_since_update.days >= 1

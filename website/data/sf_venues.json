@@ -5,15 +5,15 @@
     "months": [
       {
         "name": "november_2024",
-        "playlist_url": "https://open.spotify.com/playlist/2fqsNCFPDRxr37dJ5BBHKR"
+        "playlist_url": "https://open.spotify.com/playlist/6vfYlzvQf7xYXjeDjsjG9w"
       },
       {
         "name": "december_2024",
-        "playlist_url": "https://open.spotify.com/playlist/3HBjCDMWJsuZoE45HFnM3H"
+        "playlist_url": "https://open.spotify.com/playlist/6Z2crTNItaGxGgCg9xwAhF"
       },
       {
         "name": "january_2025",
-        "playlist_url": "https://open.spotify.com/playlist/5zDsNsfBE3oimQFIHwa8L2"
+        "playlist_url": "https://open.spotify.com/playlist/1J61GNZUPj5RTz8tiiBC8b"
       }
     ]
   },
@@ -23,15 +23,51 @@
     "months": [
       {
         "name": "november_2024",
-        "playlist_url": "https://open.spotify.com/playlist/0vgMfGR4y655lcrkPK97VL"
+        "playlist_url": "https://open.spotify.com/playlist/0OkHpOH36FABwRUPuhd3P2"
       },
       {
         "name": "december_2024",
-        "playlist_url": "https://open.spotify.com/playlist/6zrwWdV5I79CtiaGRDqG1w"
+        "playlist_url": "https://open.spotify.com/playlist/5a9vqGiak7kAMjEM48PDSG"
       },
       {
         "name": "january_2025",
-        "playlist_url": "https://open.spotify.com/playlist/4d2hqTjx96Y7URqbe9dq0U"
+        "playlist_url": "https://open.spotify.com/playlist/7oGIv8mOptvKmtdxH3WE0B"
+      }
+    ]
+  },
+  {
+    "id": "the-warfield",
+    "name": "The Warfield",
+    "months": [
+      {
+        "name": "november_2024",
+        "playlist_url": "https://open.spotify.com/playlist/4fiVph7YByHnmf6kMU2sjM"
+      },
+      {
+        "name": "december_2024",
+        "playlist_url": "https://open.spotify.com/playlist/0RSEZ6rkLmoGwrKCXTKMOB"
+      },
+      {
+        "name": "january_2025",
+        "playlist_url": "https://open.spotify.com/playlist/4YjKGa7pHvqhJyPPybntPb"
+      }
+    ]
+  },
+  {
+    "id": "bottom-of-the-hill",
+    "name": "Bottom of the Hill",
+    "months": [
+      {
+        "name": "november_2024",
+        "playlist_url": "https://open.spotify.com/playlist/44nqsSIrLAsqsLDHMfPqkk"
+      },
+      {
+        "name": "december_2024",
+        "playlist_url": "https://open.spotify.com/playlist/6LzL3Su2a2YmSo3PZOCzpW"
+      },
+      {
+        "name": "january_2025",
+        "playlist_url": "https://open.spotify.com/playlist/79u65CFhrEWA4KttpaeRto"
       }
     ]
   }
