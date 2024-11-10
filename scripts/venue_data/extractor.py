@@ -3,13 +3,8 @@ import os
 from functools import lru_cache
 from typing import List
 from . import constants
-from dataclasses import dataclass
+from .models import ArtistEvent
 from datetime import datetime
-
-@dataclass
-class ArtistEvent:
-    name: str
-    date: datetime
 
 class ArtistExtractor:
     def __init__(self):

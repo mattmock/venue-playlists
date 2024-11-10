@@ -1,14 +1,9 @@
 import yaml
 from datetime import datetime
 from typing import List
-from dataclasses import dataclass
 import os
-
-@dataclass
-class ArtistEvent:
-    name: str
-    date: str
-    # Add other fields as needed
+from pathlib import Path
+from .models import ArtistEvent
 
 def save_artists_to_file(venue_name: str, artist_events: List[ArtistEvent], month: str, output_dir: str = "data/venue-data/sf") -> str:
     """Save artists to a YAML file with timestamp in venue-specific directory."""

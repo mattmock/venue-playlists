@@ -1,50 +1,59 @@
 from typing import List
 import spotipy
-from spotipy.oauth2 import Credentials
+from spotipy.oauth2 import SpotifyOAuth
 from . import config
+import time
 
 class PlaylistGenerator:
     def __init__(self):
         if not config.SPOTIFY_CONFIG.get('refresh_token'):
-            raise ValueError("SPOTIFY_REFRESH_TOKEN environment variable is required")
-            
-        credentials = Credentials(
+            from . import auth
+            auth.setup_spotify_auth()
+            # Reload config after auth
+            from importlib import reload
+            reload(config)
+        
+        auth_manager = SpotifyOAuth(
             client_id=config.SPOTIFY_CONFIG['client_id'],
             client_secret=config.SPOTIFY_CONFIG['client_secret'],
-            refresh_token=config.SPOTIFY_CONFIG['refresh_token']
+            redirect_uri='http://localhost:8888/callback',
+            scope=config.SPOTIFY_CONFIG['scope'],
+            open_browser=False,
+            cache_handler=None
         )
         
+        auth_manager.refresh_token = config.SPOTIFY_CONFIG['refresh_token']
+        
         try:
-            self.sp = spotipy.Spotify(credentials=credentials)
-            # Test the connection and get user info
+            self.sp = spotipy.Spotify(auth_manager=auth_manager)
             user = self.sp.me()
             print(f"\nAuthenticated as Spotify user: {user['display_name']}")
         except Exception as e:
             print("\nSpotify authentication failed!")
             print(f"Error: {str(e)}")
-            print("\nPlease verify your environment variables:")
-            print("- SPOTIFY_CLIENT_ID")
-            print("- SPOTIFY_CLIENT_SECRET")
-            print("- SPOTIFY_REFRESH_TOKEN")
             raise
     
-    def search_artist_top_tracks(self, artist_name: str) -> List[str]:
+    def search_artist_top_tracks(self, artist_name: str, max_retries: int = 3) -> List[str]:
         """Search for an artist's top tracks and return their URIs."""
-        try:
-            results = self.sp.search(q=artist_name, type='artist', limit=1)
-            if not results['artists']['items']:
-                return []
-            
-            artist_id = results['artists']['items'][0]['id']
-            top_tracks = self.sp.artist_top_tracks(artist_id)
-            
-            return [
-                track['uri'] 
-                for track in top_tracks['tracks'][:config.TRACKS_PER_ARTIST]
-            ]
-        except Exception as e:
-            print(f"Error finding tracks for {artist_name}: {str(e)}")
-            return []
+        for attempt in range(max_retries):
+            try:
+                results = self.sp.search(q=artist_name, type='artist', limit=1)
+                if not results['artists']['items']:
+                    return []
+                
+                artist_id = results['artists']['items'][0]['id']
+                top_tracks = self.sp.artist_top_tracks(artist_id)
+                
+                return [
+                    track['uri'] 
+                    for track in top_tracks['tracks'][:config.TRACKS_PER_ARTIST]
+                ]
+            except Exception as e:
+                if attempt == max_retries - 1:
+                    print(f"Error finding tracks for {artist_name}: {str(e)}")
+                    return []
+                print(f"Retry {attempt + 1} for {artist_name}")
+                time.sleep(1)  # Wait 1 second before retry
 
     def create_venue_playlist(self, venue_name: str, month: str, track_uris: List[str]) -> str:
         """Create a Spotify playlist for a venue's monthly artists."""
