@@ -5,6 +5,9 @@ on:
     branches:
       - main
       - develop
+    paths:
+      - 'website/**'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -21,13 +24,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Configure base path based on environment
       - name: Configure base path
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
             echo 'baseurl: "/venue-playlists"' > website/_config.yml
           else
-            echo 'baseurl: "/venue-playlists"' > website/_config.yml
+            echo 'baseurl: "/venue-playlists/dev"' > website/_config.yml
             mkdir -p website/dev
             cp -r website/* website/dev/ 2>/dev/null || true
           fi
