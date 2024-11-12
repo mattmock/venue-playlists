@@ -2,10 +2,8 @@
 
 ## High Priority
 - [ ] Set up DigitalOcean VPS for automated playlist generation
-- [ ] Add error handling for failed Spotify API requests
-- [ ] Implement rate limiting for OpenAI API calls
-- [ ] Add tests for venue data scraping
-- [ ] Add logging for all script executions
+- [ ] Move away from depedence on Open AI API -use only as a fallback
+- [ ] Set up Vercel deployment for frontend
 
 ## Features
 - [ ] Support for additional cities beyond SF
@@ -13,6 +11,10 @@
 - [ ] Implement playlist history tracking
 
 ## Improvements
+- [ ] Add logging for all script executions
+- [ ] Add error handling for failed Spotify API requests
+- [ ] Implement rate limiting for OpenAI API calls
+- [ ] Add tests for venue data scraping
 - [ ] Optimize playlist generation performance
 - [ ] Enhance mobile responsiveness
 - [ ] Add loading states for playlist updates
@@ -30,3 +32,12 @@
 - [ ] Configure cron jobs for playlist updates
 - [ ] Implement basic monitoring and logging
 - [ ] Document deployment process 
+
+## Vercel Setup
+- [ ] Create Vercel account and connect GitHub repo
+- [ ] Configure build settings for static site
+- [ ] Set up environment variables
+- [ ] Configure dev/prod environments
+- [ ] Set up automatic preview deployments
+- [ ] Remove GitHub Pages specific configurations
+- [ ] Update documentation with Vercel deployment info
