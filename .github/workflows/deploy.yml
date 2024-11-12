@@ -23,17 +23,28 @@ jobs:
       name: prod
       url: https://mattmock.github.io/venue-playlists
     steps:
-      - name: Checkout
+      - name: Checkout both branches
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Build prod
+      - name: Build combined site
         run: |
+          # Create build directory
           mkdir -p website-build
+          
+          # Copy main branch content to root
           cp -r website/* website-build/
           echo 'baseurl: "/venue-playlists"' > website-build/_config.yml
+          
+          # Get develop branch content
+          git checkout develop
+          mkdir -p website-build/dev
+          cp -r website/* website-build/dev/
+          echo 'baseurl: "/venue-playlists/dev"' > website-build/dev/_config.yml
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -50,14 +61,26 @@ jobs:
       name: dev
       url: https://mattmock.github.io/venue-playlists/dev
     steps:
-      - name: Checkout
+      - name: Checkout both branches
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Build dev
+      - name: Build combined site
         run: |
+          # Create build directory
+          mkdir -p website-build
+          
+          # Get main branch content first
+          git checkout main
+          cp -r website/* website-build/
+          echo 'baseurl: "/venue-playlists"' > website-build/_config.yml
+          
+          # Now get develop branch content
+          git checkout develop
           mkdir -p website-build/dev
           cp -r website/* website-build/dev/
           echo 'baseurl: "/venue-playlists/dev"' > website-build/dev/_config.yml
