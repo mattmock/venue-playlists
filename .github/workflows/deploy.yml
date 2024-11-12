@@ -24,14 +24,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure base path
+      - name: Configure deployment
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
+            # For main branch - deploy to root
             echo 'baseurl: "/venue-playlists"' > website/_config.yml
           else
-            echo 'baseurl: "/venue-playlists/dev"' > website/_config.yml
+            # For develop branch
+            # Create a temporary directory
+            mkdir -p /tmp/website-content
+            # Copy all website content to temp
+            cp -r website/* /tmp/website-content/
+            # Clear website directory
+            rm -rf website/*
+            # Create dev directory
             mkdir -p website/dev
-            cp -r website/* website/dev/ 2>/dev/null || true
+            # Copy content to dev directory
+            cp -r /tmp/website-content/* website/dev/
+            # Set dev config
+            echo 'baseurl: "/venue-playlists/dev"' > website/dev/_config.yml
           fi
 
       - name: Setup Pages
