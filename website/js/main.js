@@ -67,7 +67,6 @@ function createMonthSection(month, isFirst = false) {
             <div class="playlist-container ${collapsedClass}">
                 <iframe 
                     src="https://open.spotify.com/embed/playlist/${getPlaylistId(month.playlist_url)}"
-                    width="100%" 
                     height="380" 
                     frameborder="0" 
                     allowtransparency="true" 

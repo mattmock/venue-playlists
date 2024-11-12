@@ -78,7 +78,6 @@ nav {
 .month-section {
     margin: 1rem 0;
     border-radius: 4px;
-    overflow: hidden;
 }
 
 .month-section h3 {
@@ -89,6 +88,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     user-select: none;
+    border-radius: 4px;
 }
 
 .month-section h3:hover {
@@ -105,8 +105,7 @@ nav {
 
 /* Playlist Container */
 .playlist-container {
-    padding: 1rem;
-    background-color: var(--bg-elevated);
+    margin-top: 0.5rem;
     transition: max-height 0.3s ease-out;
     max-height: 400px;
     overflow: hidden;
@@ -114,18 +113,16 @@ nav {
 
 .playlist-container.collapsed {
     max-height: 0;
-    padding: 0;
+    margin: 0;
 }
 
 .playlist-container:not(.collapsed) {
-    padding: 1rem;
-    background-color: var(--bg-elevated);
-    border-radius: 0 0 8px 8px;
+    margin-top: 0.5rem;
 }
 
 .playlist-container iframe {
     border-radius: 8px;
-    margin-top: 0.5rem;
+    width: 100%;
 }
 
 /* Buttons */
