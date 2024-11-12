@@ -28,20 +28,18 @@ jobs:
         run: |
           if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
             # For main branch - deploy to root
+            mkdir -p /tmp/website-root
+            cp -r website/* /tmp/website-root/
+            rm -rf website/*
+            cp -r /tmp/website-root/* website/
             echo 'baseurl: "/venue-playlists"' > website/_config.yml
           else
             # For develop branch
-            # Create a temporary directory
             mkdir -p /tmp/website-content
-            # Copy all website content to temp
             cp -r website/* /tmp/website-content/
-            # Clear website directory
             rm -rf website/*
-            # Create dev directory
             mkdir -p website/dev
-            # Copy content to dev directory
             cp -r /tmp/website-content/* website/dev/
-            # Set dev config
             echo 'baseurl: "/venue-playlists/dev"' > website/dev/_config.yml
           fi
 
