@@ -27,6 +27,11 @@ async function loadVenues(retries = 3) {
             return;
         }
         
+        // Calculate total number of iframes
+        totalIframes = venuesWithPlaylists.reduce((acc, venue) => 
+            acc + venue.months.filter(month => month.playlist_url).length, 0);
+        loadedIframes = 0; // Reset counter
+        
         venuesWithPlaylists.forEach(venue => {
             const card = createVenueCard(venue);
             venueGrid.appendChild(card);
@@ -55,6 +60,16 @@ function createVenueCard(venue) {
     return card;
 }
 
+let totalIframes = 0;
+let loadedIframes = 0;
+
+function handleIframeLoad() {
+    loadedIframes++;
+    if (loadedIframes === totalIframes) {
+        document.getElementById('loading-overlay').classList.add('hidden');
+    }
+}
+
 function createMonthSection(month, isFirst = false) {
     const collapsedClass = isFirst ? '' : 'collapsed';
     const arrowDirection = isFirst ? '▼' : '▶';
@@ -70,7 +85,8 @@ function createMonthSection(month, isFirst = false) {
                     height="380" 
                     frameborder="0" 
                     allowtransparency="true" 
-                    allow="encrypted-media">
+                    allow="encrypted-media"
+                    onload="handleIframeLoad()">
                 </iframe>
             </div>
         </div>
