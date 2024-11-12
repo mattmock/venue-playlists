@@ -27,7 +27,9 @@ jobs:
           if [[ ${{ github.ref }} == 'refs/heads/main' ]]; then
             echo 'baseurl: "/venue-playlists"' > website/_config.yml
           else
-            echo 'baseurl: "/venue-playlists/dev"' > website/_config.yml
+            echo 'baseurl: "/venue-playlists"' > website/_config.yml
+            mkdir -p website/dev
+            cp -r website/* website/dev/ 2>/dev/null || true
           fi
 
       - name: Setup Pages
