@@ -1,9 +1,9 @@
 # TODO List
 
 ## High Priority
-- [ ] Set up DigitalOcean VPS for automated playlist generation
-- [ ] Move away from depedence on Open AI API -use only as a fallback
 - [ ] Set up Vercel deployment for frontend
+- [ ] Move away from depedence on Open AI API -use only as a fallback
+- [ ] Set up DigitalOcean VPS for automated playlist generation
 
 ## Features
 - [ ] Support for additional cities beyond SF
