@@ -1,4 +1,4 @@
-from venue_data.main import process_venue
+from venue_data.venue_processor import process_venue
 from venue_data.config import VENUES
 import argparse
 

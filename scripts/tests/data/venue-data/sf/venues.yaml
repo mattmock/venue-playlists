@@ -1,0 +1,8 @@
+venues:
+  the-independent:
+    name: "The Independent"
+    description: "Test venue"
+    scrapers:
+      bandisintown:
+        url: "https://www.bandsintown.com/v/10001466-the-independent"
+        priority: 1 
