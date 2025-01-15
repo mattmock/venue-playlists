@@ -10,6 +10,7 @@ __pycache__/
 # Generated data files
 data/venue-data/**/artists_*.yaml
 data/venue-data/**/playlist_*.yaml
+website/data/*.json
 
 # Keep venue configs
 !data/venue-data/**/venues.yaml
@@ -18,3 +19,4 @@ data/venue-data/**/playlist_*.yaml
 .cache
 .spotify_token
 logs/
+.vercel

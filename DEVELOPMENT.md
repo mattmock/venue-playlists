@@ -67,4 +67,24 @@ python scripts/venue_data/playlist_cleanup.py
 
 # Or clean up specific playlist
 python scripts/venue_data/playlist_cleanup.py --playlist-id abc123
-``` 
+```
+
+## Deployment
+
+### Deployment Process
+1. Generate data locally:
+   ```bash
+   python scripts/build_website_data.py
+   ```
+
+2. Copy generated data to Vercel:
+   ```bash
+   # Create preview deployment (for testing)
+   vercel deploy website/
+   # Select "venue-playlists" when prompted
+   # Preview URL will look like: venue-playlists-{hash}.vercel.app
+   
+   # Or deploy to production when ready
+   vercel deploy website/ --prod
+   # Production URL: venue-playlists.vercel.app
+   ``` 
