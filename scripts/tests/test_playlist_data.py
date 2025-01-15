@@ -65,40 +65,54 @@ def test_artist_search(generator):
 
 def test_playlist_creation(generator, test_output_dir):
     """Test playlist creation and configuration."""
-    # Setup test data
-    test_tracks = generator.search_artist_top_tracks("The Beatles")
-    venue_name = "Test Venue"
-    month = "December_2023"
-    
-    # Create playlist
-    playlist_url = generator.create_venue_playlist(
-        venue_name,
-        month,
-        test_tracks
-    )
-    
-    # Validate playlist creation
-    assert playlist_url, "Failed to create playlist"
-    assert playlist_url.startswith("https://"), "Invalid playlist URL format"
-    
-    # Test playlist info saving
-    if test_output_dir:
-        # Call save_playlist_info
-        save_playlist_info(venue_name, month, playlist_url, test_output_dir)
+    playlist_id = None
+    try:
+        # Setup test data
+        test_tracks = generator.search_artist_top_tracks("The Beatles")
+        venue_name = "Test Venue"
+        month = "December_2023"
         
-        # Check that file exists
-        expected_file = Path(test_output_dir) / venue_name / f"playlist_{month}.yaml"
-        assert expected_file.exists(), "Playlist info file not created"
-        assert expected_file.stat().st_size > 0, "Playlist info file is empty"
+        # Create playlist
+        playlist_url = generator.create_venue_playlist(
+            venue_name,
+            month,
+            test_tracks
+        )
         
-        # Validate file contents
-        with open(expected_file) as f:
-            data = yaml.safe_load(f)
-            assert data['venue'] == venue_name
-            assert data['month'] == month
-            assert data['playlist_url'] == playlist_url
-    
-    logger.info(f"✓ Created and validated playlist: {playlist_url}")
+        # Extract playlist ID from URL
+        playlist_id = playlist_url.split('/')[-1]
+        
+        # Validate playlist creation
+        assert playlist_url, "Failed to create playlist"
+        assert playlist_url.startswith("https://"), "Invalid playlist URL format"
+        
+        # Test playlist info saving
+        if test_output_dir:
+            # Call save_playlist_info
+            save_playlist_info(venue_name, month, playlist_url, test_output_dir)
+            
+            # Check that file exists
+            expected_file = Path(test_output_dir) / venue_name / f"playlist_{month}.yaml"
+            assert expected_file.exists(), "Playlist info file not created"
+            assert expected_file.stat().st_size > 0, "Playlist info file is empty"
+            
+            # Validate file contents
+            with open(expected_file) as f:
+                data = yaml.safe_load(f)
+                assert data['venue'] == venue_name
+                assert data['month'] == month
+                assert data['playlist_url'] == playlist_url
+        
+        logger.info(f"✓ Created and validated playlist: {playlist_url}")
+        
+    finally:
+        # Clean up: Delete the test playlist
+        if playlist_id:
+            try:
+                generator.sp.current_user_unfollow_playlist(playlist_id)
+                logger.info(f"✓ Cleaned up test playlist: {playlist_id}")
+            except Exception as e:
+                logger.error(f"Failed to delete test playlist {playlist_id}: {e}")
 
 def run_playlist_tests():
     """Run all playlist tests."""

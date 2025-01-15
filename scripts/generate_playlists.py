@@ -5,6 +5,7 @@ from playlist_data.generator import PlaylistGenerator
 from playlist_data.storage import save_playlist_info
 import yaml
 import time
+import argparse
 
 def load_artists_for_month(venue_key: str, month: str, city_path: str) -> list:
     """Load artists from venue's monthly YAML file."""
@@ -63,6 +64,19 @@ def generate_playlists():
     cities = [d.name for d in Path("data/venue-data").iterdir() if d.is_dir()]
     for city in cities:
         process_city_playlists(city)
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--test-mode", action="store_true", 
+                       help="Create playlists with [TEST] prefix")
+    args = parser.parse_args()
+    
+    generator = PlaylistGenerator()
+    
+    # Modify playlist name in test mode
+    if args.test_mode:
+        generator.playlist_prefix = "[TEST] "
+        generator.include_creation_time = True
 
 if __name__ == "__main__":
     generate_playlists()
