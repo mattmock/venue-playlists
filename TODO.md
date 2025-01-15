@@ -1,14 +1,79 @@
-# TODO List
+# Project TODOs
 
 ## High Priority
 - [X] Set up Vercel deployment for frontend
-- [ ] Move away from dependence on Open AI API - use only as a fallback
+- [X] Move away from dependence on Open AI API - use only as a fallback
 - [ ] Set up DigitalOcean VPS for automated playlist generation
+
+## Infrastructure Setup
+1. Create Dedicated Spotify Account
+   - Set up new account "SF Venue Playlists"
+   - Update Spotify Developer settings
+   - Update environment variables
+   - Test playlist generation with new account
+
+2. Digital Ocean Deployment
+   - Migrate project to existing droplet
+   - Set up Python virtual environment
+   - Copy configuration files
+   - Set up environment variables
+   - Test playlist generation on server
+   - Document deployment process
+
+3. Automation & Monitoring
+   - Set up cron jobs for monthly updates
+   - Add health checks for scrapers
+   - Monitor BandsInTown site structure
+   - Set up Discord alerts for:
+     - Scraper failures
+     - Site structure changes
+     - Playlist generation issues
+
+4. Simple Deployment Automation
+   - Set up GitHub action for Vercel preview deployments
+   - Auto-deploy develop branch to preview URL
+   - Keep manual production deployments for safety
 
 ## Features
 - [ ] Support for additional cities beyond SF
+- [ ] Automated City Expansion:
+   - Venue Discovery:
+     - Semi-automated venue discovery:
+       - Generate initial venue list from Google Places/Reviews
+       - Simple admin UI to review/edit venues
+       - Quick "approve/reject" interface
+       - Bulk venue approval for obvious matches
+   - Venue Data Collection:
+     - Assisted URL matching:
+       - Suggest BandsInTown/Songkick URLs
+       - Show side-by-side venue comparison
+       - "One-click" config generation after approval
+   - Quality Control:
+     - Confidence scoring for venue matches
+     - Manual review interface for low confidence matches
+     - Automated venue data validation
 - [ ] Add venue filtering by music genre
 - [ ] Implement playlist history tracking
+- [ ] Smart Artist Discovery:
+   - Highlight lesser-known artists similar to user's favorites
+   - Show "If you like X, check out Y playing at Z venue"
+   - Focus on artists with <100k monthly listeners
+   - Compare artist genres with user's top genres
+   - Add "Hidden Gems" section for each venue
+   - Show Spotify popularity score comparison
+
+## Feature Enhancements
+1. Scraper Resilience
+   - Add Songkick as backup scraper
+   - Improve error handling
+   - Add scraper version tracking
+   - Add structure change detection
+
+2. Platform Expansion
+   - Add YouTube Music support
+   - Add Apple Music support
+   - Unify playlist creation interface
+   - Add platform-specific error handling
 
 ## Improvements
 - [ ] Add logging for all script executions
@@ -20,22 +85,10 @@
 - [ ] Add loading states for playlist updates
 
 ## Documentation
+- Add server setup guide
+- Document monthly process
+- Add monitoring documentation
+- Add troubleshooting guide
 - [ ] Document scraper configuration
 - [ ] Add API documentation
 - [ ] Include deployment instructions
-
-## VPS Setup
-- [X] Purchase $5/month DigitalOcean droplet
-- [X] Set up Ubuntu and Python environment
-- [ ] Configure environment variables and secrets
-- [ ] Set up automated backups for YAML/JSON files
-- [ ] Configure cron jobs for playlist updates
-- [ ] Implement basic monitoring and logging
-- [ ] Document deployment process 
-
-## Vercel Setup
-- [X] Create Vercel account and connect GitHub repo
-- [X] Configure build settings for static site
-- [X] Set up automatic preview deployments
-- [X] Remove GitHub Pages specific configurations
-- [X] Configure dev/prod environments (if needed)
