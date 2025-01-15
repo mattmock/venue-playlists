@@ -31,6 +31,7 @@ from pathlib import Path
 import yaml
 import json
 from datetime import datetime
+from venue_data.scrapers.bandisintown import BandsInTownScraper
 
 @pytest.fixture
 def test_data_dir(tmp_path):
@@ -41,6 +42,24 @@ def test_data_dir(tmp_path):
 def test_output_dir(tmp_path):
     """Create a temporary directory for test output."""
     return tmp_path / "output"
+
+@pytest.fixture(autouse=True)
+def cleanup():
+    """Cleanup any files or state after each test."""
+    yield  # This runs the test
+    # After test finishes:
+    try:
+        # Clean up any screenshots
+        screenshots = Path("logs/screenshots").glob("test-venue_*.png")
+        for screenshot in screenshots:
+            screenshot.unlink()
+        
+        # Clean up any logs
+        test_logs = Path("logs").glob("test_*.log")
+        for log in test_logs:
+            log.unlink()
+    except Exception as e:
+        print(f"Cleanup error: {e}")
 
 def test_venue_processing(test_data_dir, test_output_dir):
     """Test the complete venue processing pipeline."""
@@ -119,3 +138,50 @@ def test_empty_events(test_output_dir):
         assert len(data["artists"]) == 0, "Artists list should be empty"
         assert data["venue"] == "test-venue", "Venue name should be preserved"
         assert data["month"] == "January_2025", "Month should be preserved"
+
+def test_bandisintown_scraper(test_output_dir):
+    """Test BandsInTown scraper specifically."""
+    # Create scraper instance
+    scraper = BandsInTownScraper()
+    
+    # Test venue info
+    venue_info = {
+        "name": "The Independent",
+        "scrapers": {
+            "bandisintown": {
+                "url": "https://www.bandsintown.com/v/10001466-the-independent",
+                "priority": 1
+            }
+        }
+    }
+    
+    # Get events
+    events = scraper.get_events("the-independent", venue_info)
+    
+    # Verify events
+    assert events, "No events found"
+    for event in events:
+        assert isinstance(event, ArtistEvent), "Event should be ArtistEvent instance"
+        assert event.name, "Event should have artist name"
+        assert event.date, "Event should have date"
+        assert event.venue == venue_info["name"], "Event should have venue name"
+    
+    # Cleanup
+    scraper.cleanup()
+
+def test_scraper_factory():
+    """Test scraper factory functionality."""
+    # Test getting BandsInTown scraper
+    scraper = ScraperFactory.get_scraper("bandisintown")
+    assert isinstance(scraper, BandsInTownScraper)
+    
+    # Test getting scraper for venue
+    venue_info = {
+        "scrapers": {
+            "bandisintown": {"priority": 1},
+            "website": {"priority": 2}
+        }
+    }
+    scraper = ScraperFactory.get_scraper_for_venue(venue_info)
+    assert isinstance(scraper, BandsInTownScraper)
+    assert scraper.scraper_type == "bandisintown"
