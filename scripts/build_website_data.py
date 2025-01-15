@@ -1,51 +1,71 @@
-from pathlib import Path
-import yaml
+#!/usr/bin/env python3
+"""Build static data for the website."""
 import json
-from venue_data.text_utils import get_next_months
+from pathlib import Path
 from venue_data.storage import load_venue_config
-from filelock import FileLock
+from venue_data.text_utils import get_next_months
+import yaml
+import logging
 
-def build_venue_data(city: str = "sf"):
-    try:
-        base_dir = Path(f"data/venue-data/{city}")
-        venues_config = load_venue_config(base_dir / "venues.yaml")
-        if not venues_config:
-            raise ValueError(f"No venue config found for {city}")
+logger = logging.getLogger(__name__)
+
+def build_website_data():
+    """Build JSON data file for website consumption."""
+    output = {
+        "venues": {},
+        "last_updated": "",  # Will be set by GitHub Actions
+    }
+    
+    base_dir = Path("data/venue-data")
+    website_dir = Path("website/data")
+    website_dir.mkdir(exist_ok=True)
+    
+    # Process each city
+    for city_dir in base_dir.iterdir():
+        if not city_dir.is_dir():
+            continue
             
-        months = get_next_months()
+        city = city_dir.name
+        venues = load_venue_config(city_dir / "venues.yaml")
         
-        venue_data = []
-        for venue_key, venue_info in venues_config.items():
-            venue_entry = {
-                "id": venue_key,
+        for venue_key, venue_info in venues.items():
+            venue_data = {
                 "name": venue_info["name"],
-                "months": []
+                "description": venue_info.get("description", ""),
+                "months": {}
             }
             
-            for month in months:
-                # Check for playlist
-                playlist_file = base_dir / venue_key / f"playlist_{month}.yaml"
-                if playlist_file.exists():
+            # Load playlist data for each month
+            venue_dir = city_dir / venue_key
+            for month in get_next_months():
+                playlist_file = venue_dir / f"playlist_{month}.yaml"
+                if not playlist_file.exists():
+                    continue
+                    
+                try:
                     with open(playlist_file) as f:
-                        playlist_data = yaml.safe_load(f)
-                        venue_entry["months"].append({
-                            "name": month,
-                            "playlist_url": playlist_data["playlist_url"]
-                        })
+                        data = yaml.safe_load(f)
+                        # Skip test playlists
+                        if "[TEST]" in data.get("playlist_url", ""):
+                            continue
+                        venue_data["months"][month] = {
+                            "playlist_url": data["playlist_url"]
+                        }
+                except Exception as e:
+                    logger.error(f"Error processing {playlist_file}: {e}")
+                    continue
             
-            venue_data.append(venue_entry)
-        
-        # Ensure website/data directory exists
-        output_dir = Path("website/data")
-        output_dir.mkdir(parents=True, exist_ok=True)
-        output_file = output_dir / f"{city}_venues.json"
-        
-        with FileLock(f"{output_file}.lock"):
-            with open(output_file, 'w') as f:
-                json.dump(venue_data, f, indent=2)
-    except Exception as e:
-        print(f"Error building website data: {e}")
-        raise
+            if venue_data["months"]:  # Only include venues with playlists
+                output["venues"][venue_key] = venue_data
+    
+    # Write output file
+    output_file = website_dir / "venues.json"
+    with open(output_file, "w") as f:
+        json.dump(output, f, indent=2)
+    
+    logger.info(f"Built website data: {output_file}")
+    return output_file
 
 if __name__ == "__main__":
-    build_venue_data() 
+    logging.basicConfig(level=logging.INFO)
+    build_website_data() 

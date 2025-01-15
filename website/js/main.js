@@ -10,14 +10,22 @@ function hasValidPlaylistData(venue) {
 
 async function loadVenues(retries = 3) {
     try {
-        const response = await fetch('data/sf_venues.json');
+        const response = await fetch('data/venues.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const venues = await response.json();
         
-        // Filter venues to only include those with valid playlist data
-        const venuesWithPlaylists = venues.filter(hasValidPlaylistData);
+        // Get venues object from response
+        const venuesData = venues.venues;
+        
+        // Convert to array and filter
+        const venuesWithPlaylists = Object.entries(venuesData)
+            .map(([key, venue]) => ({
+                id: key,
+                ...venue
+            }))
+            .filter(venue => Object.keys(venue.months).length > 0);
         
         const venueGrid = document.getElementById('venue-grid');
         venueGrid.innerHTML = ''; // Clear existing content
@@ -29,7 +37,7 @@ async function loadVenues(retries = 3) {
         
         // Calculate total number of iframes
         totalIframes = venuesWithPlaylists.reduce((acc, venue) => 
-            acc + venue.months.filter(month => month.playlist_url).length, 0);
+            acc + Object.values(venue.months).length, 0);
         loadedIframes = 0; // Reset counter
         
         venuesWithPlaylists.forEach(venue => {
@@ -53,8 +61,12 @@ function createVenueCard(venue) {
     card.className = 'venue-card';
     card.innerHTML = `
         <h2 class="venue-name">${venue.name}</h2>
+        <p class="venue-description">${venue.description || ''}</p>
         <div class="month-sections">
-            ${venue.months.map((month, index) => createMonthSection(month, index === 0)).join('')}
+            ${Object.entries(venue.months)
+                .map(([monthKey, monthData], index) => 
+                    createMonthSection(monthKey, monthData, index === 0)
+                ).join('')}
         </div>
     `;
     return card;
@@ -70,18 +82,18 @@ function handleIframeLoad() {
     }
 }
 
-function createMonthSection(month, isFirst = false) {
+function createMonthSection(monthKey, monthData, isFirst = false) {
     const collapsedClass = isFirst ? '' : 'collapsed';
     const arrowDirection = isFirst ? '▼' : '▶';
     
     return `
         <div class="month-section">
             <h3 onclick="togglePlaylist(this)">
-                ${formatMonth(month.name)} <span class="arrow">${arrowDirection}</span>
+                ${formatMonth(monthKey)} <span class="arrow">${arrowDirection}</span>
             </h3>
             <div class="playlist-container ${collapsedClass}">
                 <iframe 
-                    src="https://open.spotify.com/embed/playlist/${getPlaylistId(month.playlist_url)}"
+                    src="https://open.spotify.com/embed/playlist/${getPlaylistId(monthData.playlist_url)}"
                     height="380" 
                     frameborder="0" 
                     allowtransparency="true" 
