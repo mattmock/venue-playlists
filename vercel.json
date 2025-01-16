@@ -2,6 +2,6 @@
   "version": 2,
   "rootDirectory": "website",
   "builds": [
-    { "src": "**", "use": "@vercel/static" }
+    { "src": "*", "use": "@vercel/static" }
   ]
 }
