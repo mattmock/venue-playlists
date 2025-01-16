@@ -3,6 +3,39 @@
 ## High Priority
 - [X] Set up Vercel deployment for frontend
 - [X] Move away from dependence on Open AI API - use only as a fallback
+- [ ] Migrate to API-based Architecture
+    - Phase 1: Basic API Setup (Massive Win)
+      - Set up FastAPI/Flask server
+      - Serve existing YAML data through API
+      - Add basic error handling
+      - Deploy to DigitalOcean
+    - Backend Service Setup:
+      - Set up API server on DigitalOcean droplet
+      - Configure Nginx
+        - Route requests to prod/dev APIs
+        - Set up SSL certificates
+        - Configure security headers
+      - Create venues/playlists/events endpoints
+      - Move playlist generation logic to backend
+      - Set up PostgreSQL database
+    - Phase 2: Environment Setup (Huge Win)
+      - Set up development environment
+      - Configure staging environment
+      - Document environment setup
+      - Add environment variables
+    - Frontend Updates:
+      - Add environment-based API URLs
+      - Update fetch logic to use API
+      - Improve error handling
+      - Enable Vercel auto-deploys
+    - Development Workflow:
+      - Configure local development environment
+      - Set up staging/development API endpoints
+      - Document new development process
+    - Deployment Pipeline:
+      - Set up GitHub Actions for API deployment
+      - Configure staging/production environments
+      - Add automated testing
 - [ ] Set up DigitalOcean VPS for automated playlist generation
 
 ## Infrastructure Setup
