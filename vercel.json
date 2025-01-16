@@ -4,6 +4,7 @@
     { "src": "website/**", "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "/data/(.*)", "dest": "/website/data/$1" },
     { "src": "/(.*)", "dest": "/website/$1" }
   ]
 }
