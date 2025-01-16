@@ -1,7 +1,9 @@
 {
   "version": 2,
-  "rootDirectory": "website",
   "builds": [
-    { "src": "*", "use": "@vercel/static" }
+    { "src": "website/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/website/$1" }
   ]
 }
