@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "rootDirectory": "website",
   "builds": [
     { "src": "**", "use": "@vercel/static" }
   ]
