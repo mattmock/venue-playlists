@@ -1,95 +1,39 @@
-# Venue Playlists
+# SF Venue Playlists
 
-A tool for collecting venue events and generating Spotify playlists.
+A collection of auto-updating Spotify playlists featuring artists playing at popular San Francisco music venues.
 
-## Setup
+## What is this?
 
-### Prerequisites
-- Python 3.8+
-- A Spotify Developer account
-- An OpenAI API key
-- Chrome/Chromium (for Selenium)
+Ever wanted to discover artists playing at local venues before buying tickets? This project:
+- Tracks upcoming shows at SF music venues
+- Creates monthly Spotify playlists for each venue
+- Updates automatically as new shows are announced
 
-### Configuration
-Create a `.env` file:
-```env
-SPOTIFY_CLIENT_ID=your_client_id
-SPOTIFY_CLIENT_SECRET=your_client_secret
-SPOTIPY_REDIRECT_URI=http://localhost:8888/callback
-OPENAI_API_KEY=your_openai_api_key
+## Featured Venues
+- The Independent
+- The Fillmore
+- Bottom of the Hill
+- Great American Music Hall
+- The Warfield
+(and more...)
 
-# Scraper settings
-PYTHONPATH=.
-LOGLEVEL=DEBUG
-SAVE_ALL_SCREENSHOTS=true
-```
+## How it Works
+1. Checks venue calendars monthly
+2. Creates Spotify playlists with top tracks from upcoming artists
+3. Updates monthly
 
-### First-Time Setup
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+## Try It Out
+Visit [venue-playlists.vercel.app](https://venue-playlists.vercel.app) to:
+- Browse venue playlists
+- Discover upcoming artists
+- Find your next show
 
-2. Run initial setup:
-```bash
-python scripts/collect_events.py
-```
-This will:
-- Open a browser window for authorization
-- Save the refresh token to your `.env` file
+## About
+Built by [Matt Mock](https://github.com/mattmock) to make discovering local music easier.
 
-## Usage
-
-### Collecting Events
-# Collect all venues
-```bash
-python scripts/collect_events.py
-```
-
-# Force update specific venue
-```bash
-python scripts/collect_events.py --force the-independent
-```
-
-# Force update all venues
-```bash
-python scripts/collect_events.py --force-all
-```
-
-### Generating Playlists
-```bash
-python scripts/generate_playlists.py
-```
-
-## Testing
-```bash
-# Run all tests
-pytest scripts/tests/ -v
-
-# Run specific test file
-pytest scripts/tests/test_venue_data.py -v
-
-# Run specific test
-pytest scripts/tests/test_venue_data.py::test_venue_processing -v
-```
-
-## Data Structure
-
-Each venue needs a config in `data/venue-data/{city}/venues.yaml`:
-```yaml
-venues:
-  venue_key:
-    name: "Venue Name"
-    description: "Venue description"
-    scrapers:
-      bandisintown:
-        url: "https://www.bandsintown.com/v/venue-id"
-        priority: 1
-      website:  # future support
-        url: "https://venue-website.com/calendar"
-        priority: 2
-```
-
-The tool generates:
-1. Monthly artist listings (`artists_{month}.yaml`)
-2. Playlist metadata (`playlist_{month}.yaml`)
+## Tech Stack
+- **Frontend**: HTML, CSS, JavaScript, HTMX
+- **Backend**: Python
+- **APIs**: Spotify Web API
+- **Infrastructure**: Vercel (hosting), DigitalOcean (automation)
+- **Data**: YAML, JSON
