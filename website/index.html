@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- <base href="/venue-playlists/"> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SF Venue Playlists</title>
     
-    <!-- HTMX for interactivity -->
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    
     <!-- Custom styles -->
     <link rel="stylesheet" href="css/styles.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="images/favicon.png">
     
     <!-- Loading.io CSS spinners -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-io-css@1.0.0/loading.css">
@@ -30,14 +23,6 @@
     <main>
         <div id="venue-grid" class="venue-grid">
             <!-- Venue cards will be populated here -->
-            <template id="venue-card-template">
-                <div class="venue-card">
-                    <h2 class="venue-name"></h2>
-                    <div class="month-sections">
-                        <!-- Month sections will be populated dynamically -->
-                    </div>
-                </div>
-            </template>
         </div>
     </main>
 
@@ -46,8 +31,7 @@
     </footer>
 
     <!-- Custom JavaScript -->
-    <script src="js/main.js"></script>
-    <script src="js/venue-cards.js"></script>
+    <script type="module" src="js/main.js"></script>
 
     <div class="loading-overlay" id="loading-overlay">
         <div class="lds-ring"><div></div><div></div><div></div><div></div></div>

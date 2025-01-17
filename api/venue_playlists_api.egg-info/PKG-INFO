@@ -1,0 +1,7 @@
+Metadata-Version: 2.2
+Name: venue-playlists-api
+Version: 0.1.0
+Requires-Dist: flask
+Requires-Dist: flask-cors
+Requires-Dist: pyyaml
+Dynamic: requires-dist

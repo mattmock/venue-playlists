@@ -1,0 +1,8 @@
+setup.py
+tests/__init__.py
+tests/test_venues.py
+venue_playlists_api.egg-info/PKG-INFO
+venue_playlists_api.egg-info/SOURCES.txt
+venue_playlists_api.egg-info/dependency_links.txt
+venue_playlists_api.egg-info/requires.txt
+venue_playlists_api.egg-info/top_level.txt
