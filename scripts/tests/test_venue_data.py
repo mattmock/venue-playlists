@@ -19,19 +19,19 @@ The tests use fixtures from conftest.py for:
 - Mock venue configuration
 - Mock scraper implementation
 """
-from venue_data import (
+from scripts.venue_data import (
     process_venue, 
     load_venue_config,
     save_artists_to_file
 )
-from venue_data.scraper_factory import ScraperFactory
-from venue_data.models import ArtistEvent
+from scripts.venue_data.scraper_factory import ScraperFactory
+from scripts.venue_data.models import ArtistEvent
 import pytest
 from pathlib import Path
 import yaml
 import json
 from datetime import datetime
-from venue_data.scrapers.bandisintown import BandsInTownScraper
+from scripts.venue_data.scrapers.bandisintown import BandsInTownScraper
 
 @pytest.fixture
 def test_data_dir(tmp_path):

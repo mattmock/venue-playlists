@@ -18,7 +18,7 @@ The tests use fixtures from conftest.py for:
 - Test data directory management
 - Temporary output directory handling
 """
-from playlist_data import (
+from scripts.playlist_data import (
     PlaylistGenerator,
     save_playlist_info
 )
