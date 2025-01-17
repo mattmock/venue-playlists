@@ -94,6 +94,11 @@
    - Compare artist genres with user's top genres
    - Add "Hidden Gems" section for each venue
    - Show Spotify popularity score comparison
+   - User Authentication Features:
+     - Analyze user's Spotify listening history for better recommendations
+     - Create personalized venue recommendations based on music taste
+     - Alert users when similar artists announce shows
+     - Track which recommendations led to event attendance
 
 ## Feature Enhancements
 1. Scraper Resilience
@@ -125,3 +130,57 @@
 - [ ] Document scraper configuration
 - [ ] Add API documentation
 - [ ] Include deployment instructions
+
+## Future Ideas & Concepts
+Ideas that need more exploration and brainstorming before moving to concrete features.
+
+- [ ] Spotify Playlist Organization
+  - Challenge: Spotify API doesn't support folder management
+  - Potential Solutions:
+    - Implement consistent naming convention (e.g., "[City] - [Venue] - [Month Year]")
+    - Use playlist descriptions for enhanced metadata
+    - Focus on website as primary browsing interface
+  - Questions to Explore:
+    - Impact on user experience for direct Spotify profile browsers
+    - Trade-offs between different naming conventions
+    - Ways to maintain organization as project scales to more cities
+
+- [ ] Spotify Web UI Automation for Folder Management
+  - Challenge: Automate folder creation/management through Spotify's web interface
+  - Technical Approach:
+    - Use Selenium/Playwright to interact with Spotify Web Player
+    - Simulate manual folder creation and playlist organization
+  - Major Considerations:
+    - High maintenance burden due to UI changes
+    - Session handling and authentication complexity
+    - Potential rate limiting or detection by Spotify
+    - Need for robust error handling and recovery
+  - Might be worth exploring as proof of concept, but likely too fragile for production use
+
+- [ ] Integrated Music Discovery & Event Tracking
+  - Challenge: Users discover songs they like while browsing playlists in Spotify, but connecting back to the live event is cumbersome
+  - Use Case Focus:
+    - Quick sampling of venue's upcoming artists
+    - Easy way to preview and track interesting shows
+    - NOT meant for extended listening sessions
+  - Potential Solutions:
+    - Integrate Spotify Web Playback SDK for quick previews:
+      - 30-second song samples with artist/event context
+      - Simple "like/save event" button while previewing
+      - Quick skip/next to sample different artists
+      - Emphasis on event details over playback controls
+    - Add custom playlist descriptions with direct links to event pages
+    - Build a lightweight "interested in" tracking system
+    - Focus on bridging discovery to ticket purchase/event tracking
+  - User Authentication Benefits:
+    - Save interesting shows while sampling
+    - Quick-add to personal event tracking list
+    - Basic preferences for music recommendations
+  - Questions to Explore:
+    - How to optimize the UI for quick sampling vs extended listening
+    - Ways to make event tracking/saving as frictionless as possible
+    - Premium subscription requirement impact (Web Playback SDK requires Spotify Premium)
+    - Browser compatibility and mobile support considerations
+    - User data privacy considerations and GDPR compliance
+    - Strategy for users without Premium (fallback features)
+    - Balance between feature utility and app simplicity
