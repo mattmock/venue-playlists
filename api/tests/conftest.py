@@ -2,6 +2,7 @@ import pytest
 from pathlib import Path
 import yaml
 import sys
+import os
 from datetime import datetime
 
 @pytest.fixture(autouse=True)
@@ -20,10 +21,17 @@ def test_data_dir():
 @pytest.fixture
 def app():
     """Create test app."""
+    # Set environment to testing
+    os.environ['FLASK_ENV'] = 'testing'
+    
     from venue_playlists_api import create_app
     app = create_app()
     app.config["VENUE_DATA_DIR"] = str(Path(__file__).parent / "data" / "venue-data")
-    return app
+    
+    yield app
+    
+    # Clean up
+    os.environ.pop('FLASK_ENV', None)
 
 @pytest.fixture
 def client(app):
