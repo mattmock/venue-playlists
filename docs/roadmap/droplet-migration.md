@@ -6,12 +6,24 @@ This document outlines the step-by-step plan for migrating the venue-playlists a
 ## Pre-Migration Tasks
 - [ ] Script Adaptations
   - [ ] Update collect_events.py to use API's venue data structure
-  - [ ] Update generate_playlists.py to align with API expectations
-  - [ ] Remove build_website_data.py (replaced by API)
-  - [ ] Update update_all.py to remove website data build step
-  - [ ] Add proper logging to all scripts
+  - [x] Update generate_playlists.py to align with API expectations
+    - Added proper logging with file and console output
+    - Added test mode options (--test-venues, --months)
+    - Added auto-cleanup of test playlists with --preserve-test flag
+    - Fixed type hints and error handling
+  - [x] Remove build_website_data.py (replaced by API)
+  - [x] Update update_all.py to remove website data build step
+    - Added proper logging with file output
+    - Switched to load_venue_config instead of static VENUES
+    - Improved error handling and reporting
+  - [x] Add proper logging to all scripts
+    - Added to generate_playlists.py (file + console)
+    - Added to update_all.py (file + console)
+    - Remaining: collect_events.py
   - [ ] Test scripts with local API
-  - [ ] Document new script behaviors and requirements
+  - [x] Document new script behaviors and requirements
+    - Updated DEVELOPMENT.md with comprehensive test mode documentation
+    - Added details for all new command options
 - [ ] Local Testing
   - [ ] Run full end-to-end test locally
   - [ ] Verify all API endpoints with production configuration
