@@ -70,24 +70,36 @@ pytest scripts/tests/test_venue_data.py::test_venue_processing -v
 
 ## Playlist Management
 
-### Test Playlists
+### Test Mode
 When developing or testing, use test mode to avoid cluttering your Spotify:
 
 ```bash
-# Create playlists in test mode
+# Basic test mode (playlists are auto-cleaned after creation)
 python scripts/generate_playlists.py --test-mode
+
+# Test with specific venues
+python scripts/generate_playlists.py --test-mode --test-venues the-independent the-fillmore
+
+# Test with limited months
+python scripts/generate_playlists.py --test-mode --test-venues the-independent --months 1
+
+# Force update even if playlist exists
+python scripts/generate_playlists.py --test-mode --test-venues the-independent --months 1 --force
+
+# Keep test playlists (don't auto-clean)
+python scripts/generate_playlists.py --test-mode --test-venues the-independent --preserve-test
 ```
+
+Test mode features:
+- Adds "[TEST] " prefix to playlist names
+- Includes creation timestamp in description
+- Auto-cleans playlists after creation (unless --preserve-test is used)
+- Can be combined with --test-venues and --months for targeted testing
 
 ### Cleaning Up Test Playlists
 ```bash
-# Clean up all test playlists older than 24 hours
-python scripts/venue_data/playlist_cleanup.py
-
 # Clean up specific playlist
 python scripts/venue_data/playlist_cleanup.py --playlist-id abc123
-
-# Clean up test playlists older than 2 hours
-python scripts/venue_data/playlist_cleanup.py --hours 2
 ```
 
 ## Development Tips
