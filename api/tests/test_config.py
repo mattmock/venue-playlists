@@ -3,14 +3,6 @@ import os
 from pathlib import Path
 import sys
 
-@pytest.fixture(autouse=True)
-def clean_imports():
-    """Clean up imports before each test."""
-    # Remove any cached imports
-    to_remove = [m for m in sys.modules if m.startswith('venue_playlists_api')]
-    for m in to_remove:
-        del sys.modules[m]
-
 def test_default_config():
     """Test default configuration values."""
     from venue_playlists_api import create_app
