@@ -1,6 +1,10 @@
 setup.py
 tests/__init__.py
 tests/test_venues.py
+venue_playlists_api/__init__.py
+venue_playlists_api/config.py
+venue_playlists_api/utils.py
+venue_playlists_api/venues.py
 venue_playlists_api.egg-info/PKG-INFO
 venue_playlists_api.egg-info/SOURCES.txt
 venue_playlists_api.egg-info/dependency_links.txt

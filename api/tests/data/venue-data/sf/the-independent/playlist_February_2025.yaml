@@ -1,0 +1,8 @@
+events:
+- artist: Test Artist 3
+  date: '2025-02-10'
+  name: Test Event 1
+- artist: Test Artist 4
+  date: '2025-02-25'
+  name: Test Event 2
+playlist_url: https://open.spotify.com/playlist/test_february_2025

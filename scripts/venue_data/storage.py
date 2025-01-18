@@ -4,11 +4,12 @@ from typing import List
 import os
 from pathlib import Path
 import logging
+from config.paths import VENUE_DATA_DIR
 from .models import ArtistEvent
 
 logger = logging.getLogger(__name__)
 
-def save_artists_to_file(venue_name: str, artist_events: List[ArtistEvent], month: str, output_dir: str = "data/venue-data/sf") -> str:
+def save_artists_to_file(venue_name: str, artist_events: List[ArtistEvent], month: str, output_dir: str) -> str:
     """Save artists to a YAML file with timestamp in venue-specific directory."""
     venue_dir = get_venue_output_dir(venue_name, output_dir)
     filename = f"{venue_dir}/artists_{month}.yaml"
@@ -34,10 +35,9 @@ def save_artists_to_file(venue_name: str, artist_events: List[ArtistEvent], mont
     logger.info(f"Saved {len(unique_events)} unique artists to {filename}")
     return filename
 
-def load_venue_config(config_path: str = None) -> dict:
+def load_venue_config(city: str = "sf") -> dict:
     """Load venue configuration with validation."""
-    if config_path is None:
-        config_path = "data/venue-data/sf/venues.yaml"
+    config_path = os.path.join(VENUE_DATA_DIR, city, "venues.yaml")
         
     try:
         with open(config_path) as f:
@@ -56,23 +56,23 @@ def load_venue_config(config_path: str = None) -> dict:
         logger.error(f"Error loading venue config from {config_path}: {str(e)}")
         raise
 
-def get_venue_output_dir(venue_key: str, base_dir: str = "data/venue-data/sf") -> str:
+def get_venue_output_dir(venue_key: str, base_dir: str) -> str:
     """Get the output directory for a venue and ensure it exists."""
-    output_dir = f"{base_dir}/{venue_key}"
+    output_dir = os.path.join(base_dir, venue_key)
     os.makedirs(output_dir, exist_ok=True)
     return output_dir 
 
 def needs_update(venue_key: str, month: str, output_dir: str) -> bool:
     """Check if venue data needs to be updated (older than 24 hours)."""
-    artist_file = Path(output_dir) / venue_key / f"artists_{month}.yaml"
-    playlist_file = Path(output_dir) / venue_key / f"playlist_{month}.yaml"
+    artist_file = os.path.join(output_dir, venue_key, f"artists_{month}.yaml")
+    playlist_file = os.path.join(output_dir, venue_key, f"playlist_{month}.yaml")
     
-    if artist_file.exists() and not playlist_file.exists():
+    if os.path.exists(artist_file) and not os.path.exists(playlist_file):
         return True
         
-    if playlist_file.exists():
-        playlist_time = datetime.fromtimestamp(playlist_file.stat().st_mtime)
-        artist_time = datetime.fromtimestamp(artist_file.stat().st_mtime)
+    if os.path.exists(playlist_file):
+        playlist_time = datetime.fromtimestamp(os.path.getmtime(playlist_file))
+        artist_time = datetime.fromtimestamp(os.path.getmtime(artist_file))
         
         if artist_time > playlist_time:
             return True

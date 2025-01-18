@@ -28,3 +28,6 @@ def create_app(test_config=None):
     app.register_blueprint(venues.bp)
     
     return app
+
+# Create the application instance
+app = create_app()
