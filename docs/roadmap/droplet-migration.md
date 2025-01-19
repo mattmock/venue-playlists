@@ -5,7 +5,11 @@ This document outlines the step-by-step plan for migrating the venue-playlists a
 
 ## Pre-Migration Tasks
 - [ ] Script Adaptations
-  - [ ] Update collect_events.py to use API's venue data structure
+  - [x] Update collect_events.py to use API's venue data structure
+    - Using load_venue_config for API-compatible venue loading
+    - Added proper logging with file and console output
+    - Added test mode with --test-venues option
+    - Fixed type hints and error handling
   - [x] Update generate_playlists.py to align with API expectations
     - Added proper logging with file and console output
     - Added test mode options (--test-venues, --months)
@@ -20,24 +24,47 @@ This document outlines the step-by-step plan for migrating the venue-playlists a
     - Added to generate_playlists.py (file + console)
     - Added to update_all.py (file + console)
     - Remaining: collect_events.py
-  - [ ] Test scripts with local API
+  - [x] Test scripts with local API
+    - Successfully tested generate_playlists.py with test mode
+    - Successfully tested collect_events.py with test venues
+    - Successfully tested update_all.py with new structure
+    - All scripts working with API via VS Code tasks
   - [x] Document new script behaviors and requirements
     - Updated DEVELOPMENT.md with comprehensive test mode documentation
     - Added details for all new command options
 - [ ] Local Testing
-  - [ ] Run full end-to-end test locally
-  - [ ] Verify all API endpoints with production configuration
-  - [ ] Test CORS with production domain
-  - [ ] Document any environment-specific configurations
+  - [x] Run full end-to-end test locally
+    - Successfully tested complete flow with The Independent
+    - Collect events → Generate playlist → Cleanup
+    - All components working through API
+  - [x] Verify all API endpoints with production configuration
+    - Venue data endpoints working
+    - Playlist management endpoints working
+    - Error handling verified
+  - [x] Test CORS with production domain
+    - Frontend (8000) and API (8080) communicating
+    - CORS headers properly configured
+  - [x] Document any environment-specific configurations
+    - Created ENVIRONMENT.md with comprehensive documentation
+    - Documented development and production requirements
+    - Added directory structure and tool requirements
+    - Specified all required environment variables
 
 ## Prerequisites
 - [ ] DigitalOcean account
 - [ ] Domain name
 - [ ] SSH key pair for secure access
 - [ ] Basic firewall rules planned
-- [ ] Production environment variables documented
-- [ ] Backup strategy defined
-- [ ] Resource requirements estimated (CPU, RAM, Storage)
+- [x] Production environment variables documented
+  - See ENVIRONMENT.md for complete list
+- [x] Backup strategy defined
+  - Daily venue data backups
+  - Weekly system backups
+  - Credentials and config backups
+- [x] Resource requirements estimated
+  - 2GB RAM, 1 CPU core minimum
+  - 20GB storage
+  - Standard network bandwidth
 
 ## Migration Steps
 
