@@ -1,91 +1,67 @@
 # Environment Configuration
 
-## Development Environment
+## Development Setup
 
-### Required Environment Variables
-```bash
-# API Configuration
-FLASK_APP=venue_playlists_api
-FLASK_ENV=development
-FLASK_DEBUG=1
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Fill in your credentials in `.env` (see below for required values)
+3. Start the servers using VS Code tasks:
+   - `Start API Server`: http://localhost:8080
+   - `Start Frontend Server`: http://localhost:8000
+   - Or use `Start All Servers` to launch both
 
-# Spotify API (required for playlist management)
-SPOTIFY_CLIENT_ID=your_client_id
-SPOTIFY_CLIENT_SECRET=your_client_secret
-SPOTIFY_REFRESH_TOKEN=your_refresh_token
+### Required Credentials
+See `.env.example` for details and format:
+- Spotify API credentials (required for playlist management)
+- Flask configuration (defaults work for development)
+- Optional path overrides if needed
 
-# Optional Overrides
-VENUE_DATA_DIR=/path/to/data  # Defaults to PROJECT_ROOT/data/venue-data
-VENUE_PLAYLISTS_ROOT=/path/to/root  # Auto-detected if not set
-```
-
-### Local Development Setup
-- API Server: http://localhost:8080
-- Frontend Server: http://localhost:8000
-- VS Code tasks handle server management:
-  - `Start API Server`: Runs Flask development server
-  - `Start Frontend Server`: Serves static files
-  - `Start All Servers`: Launches both servers
-  - `Restart Servers`: Full restart of both servers
-
-### Directory Structure
+### Project Structure
 ```
 venue-playlists/
-├── data/
-│   └── venue-data/      # Venue data files
-│       └── sf/          # City-specific data
-├── logs/                # Application logs
-├── scripts/            # CLI tools
+├── data/venue-data/    # Venue data files
+├── logs/              # Application logs
+├── scripts/           # CLI tools
 ├── venue_playlists_api/ # API package
-└── website/            # Static frontend
+└── website/           # Static frontend
 ```
 
-### Development Tools
-- Python 3.12+
-- Flask 3.0+
-- VS Code with Python extension
-- Chrome/Firefox for testing
+## Production Setup (DigitalOcean)
 
-## Production Environment
+### Initial Server Setup
+1. Create Ubuntu droplet (512MB RAM minimum)
+2. Set up SSH access and basic security
+3. Install dependencies: Python 3.12, nginx, certbot
 
-### Required Environment Variables
-```bash
-# API Configuration
-FLASK_APP=venue_playlists_api
-FLASK_ENV=production
-SECRET_KEY=your_secure_key  # Required in production
+### Environment Setup
+1. Store production credentials in `/etc/venue-playlists/.env`:
+   ```bash
+   sudo mkdir /etc/venue-playlists
+   sudo nano /etc/venue-playlists/.env
+   sudo chmod 640 /etc/venue-playlists/.env
+   ```
 
-# CORS Configuration
-ALLOWED_ORIGINS=https://your-domain.com,https://api.your-domain.com
+2. Required production settings:
+   - `FLASK_ENV=production`
+   - `SECRET_KEY` (generate a secure one)
+   - `ALLOWED_ORIGINS` (your domain)
+   - All Spotify API credentials
 
-# Spotify API
-SPOTIFY_CLIENT_ID=your_client_id
-SPOTIFY_CLIENT_SECRET=your_client_secret
-SPOTIFY_REFRESH_TOKEN=your_refresh_token
-```
+### Backup Strategy
+Keep secure copies of:
+- Production `.env` file
+- Nginx configuration
+- SSL certificates
+- Venue data (in `/opt/venue-playlists/data`)
 
-### Security Requirements
-- HTTPS required for all endpoints
-- Secure cookie settings enabled
-- Rate limiting configured
-- CORS restricted to specific domains
+### Maintenance Notes
+- Logs are in `/var/log/venue-playlists/`
+- Use `systemctl restart venue-playlists` to restart the service
+- Certbot auto-renews SSL certificates
 
-### Logging Configuration
-- Application logs: `/var/log/venue-playlists/`
-  - API access logs
-  - Error logs
-  - Script execution logs
-- Log rotation enabled
-- Structured logging format
-
-### Resource Requirements
-- CPU: 1 core minimum
-- RAM: 2GB minimum
-- Storage: 20GB minimum
-- Network: Standard DO bandwidth
-
-### Backup Requirements
-- Daily venue data backups
-- Weekly system backups
-- Spotify credentials backup
-- Configuration backup 
+## Personal Notes
+- Keep a copy of production credentials in Bitwarden
+- Document any custom changes or configurations here
+- Add deployment/update procedures as they're developed

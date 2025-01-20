@@ -4,7 +4,7 @@
 This document outlines the step-by-step plan for migrating the venue-playlists application from local development to a DigitalOcean droplet.
 
 ## Pre-Migration Tasks
-- [ ] Script Adaptations
+- [x] Script Adaptations
   - [x] Update collect_events.py to use API's venue data structure
     - Using load_venue_config for API-compatible venue loading
     - Added proper logging with file and console output
@@ -62,7 +62,8 @@ This document outlines the step-by-step plan for migrating the venue-playlists a
   - Weekly system backups
   - Credentials and config backups
 - [x] Resource requirements estimated
-  - 2GB RAM, 1 CPU core minimum
+  - 512MB RAM (lightweight API and scripts)
+  - 1 CPU core
   - 20GB storage
   - Standard network bandwidth
 
