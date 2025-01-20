@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from .utils import get_next_months
 
-bp = Blueprint('venues', __name__)
+bp = Blueprint('venues', __name__, url_prefix='/api')
 logger = logging.getLogger(__name__)
 
 def load_venues(base_dir=None):
