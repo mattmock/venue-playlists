@@ -1,7 +1,6 @@
 # Development
 .vscode/
 venv/
-.env
 __pycache__/
 *.pyc
 *.pyo
@@ -15,8 +14,12 @@ website/data/*.json
 # Keep venue configs
 !data/venue-data/**/venues.yaml
 
-# Authentication
+# Authentication and credentials
+.env
 .cache
 .spotify_token
+instance/
+
+# Runtime
 logs/
 .vercel
