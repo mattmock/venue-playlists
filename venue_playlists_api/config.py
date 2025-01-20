@@ -101,7 +101,17 @@ class ProductionConfig(BaseConfig):
     PERMANENT_SESSION_LIFETIME: int = 3600  # 1 hour
     
     # Production CORS settings - should be set via environment
-    CORS_ORIGINS: list[str] = os.environ.get('ALLOWED_ORIGINS', '').split(',') if os.environ.get('ALLOWED_ORIGINS') else []
+    DEFAULT_ALLOWED_ORIGINS = [
+        "https://venue-playlists.vercel.app",  # Primary Vercel domain
+        "https://*.venue-playlists.vercel.app",  # All Vercel preview deployments
+        "https://venue-playlists-*.vercel.app"   # All Vercel production deployments
+    ]
+    
+    # Use environment ALLOWED_ORIGINS if set, otherwise use defaults
+    CORS_ORIGINS: list[str] = (
+        os.environ.get('ALLOWED_ORIGINS', '').split(',') if os.environ.get('ALLOWED_ORIGINS')
+        else DEFAULT_ALLOWED_ORIGINS
+    )
     
     # Production settings that must be overridden
     SECRET_KEY: str = os.environ.get('SECRET_KEY', '')  # Empty string as default, but should be set in production
@@ -112,6 +122,8 @@ class ProductionConfig(BaseConfig):
         super().__init__()
         if not self.SECRET_KEY:
             raise ValueError("SECRET_KEY must be set in production environment")
+        if not self.CORS_ORIGINS:
+            raise ValueError("CORS_ORIGINS must not be empty in production")
 
 # Configuration dictionary
 config: Dict[str, Any] = {
