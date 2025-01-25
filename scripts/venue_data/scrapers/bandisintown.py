@@ -38,6 +38,16 @@ class BandsInTownScraper(VenueScraper):
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         
+        # Randomize user-agent
+        user_agents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'
+        ]
+        options.add_argument(f'user-agent={random.choice(user_agents)}')
+        
         try:
             self.driver = webdriver.Chrome(options=options)
             # Execute CDP commands to prevent detection
@@ -88,7 +98,8 @@ class BandsInTownScraper(VenueScraper):
             url = venue_info['scrapers'][self.scraper_type]['url']
             logger.info(f"Fetching events for {venue_key} from {url}")
             
-            # Load the page
+            # Load the page with random delay
+            time.sleep(random.uniform(1, 3))  # Random delay between 1 to 3 seconds
             self.driver.get(url)
             
             try:
