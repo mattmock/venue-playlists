@@ -43,3 +43,4 @@ venv/
 .vercel/
 website/.vercel/
 website/data/venues.jsonapi/tests/data/
+website/data/venues.json
