@@ -1,5 +1,9 @@
 import os
+import logging
 from dotenv import load_dotenv
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 # Load environment variables from .env file
 load_dotenv(override=True)
@@ -17,11 +21,13 @@ SPOTIFY_CONFIG = {
     'scope': 'playlist-modify-public'
 }
 
-# Debug prints (first 4 chars only)
-print("\nConfig Values:")
-print(f"client_id: {SPOTIFY_CONFIG['client_id'][:4]}...")
-print(f"client_secret: {SPOTIFY_CONFIG['client_secret'][:4]}...")
-print(f"refresh_token: {SPOTIFY_CONFIG['refresh_token'][:4] if SPOTIFY_CONFIG['refresh_token'] else 'None'}...")
+# Log configuration status (safely)
+logger.info("Spotify configuration loaded")
+logger.debug("Required credentials present")
+if SPOTIFY_CONFIG['refresh_token']:
+    logger.debug("Refresh token found")
+else:
+    logger.debug("No refresh token - will be obtained during auth flow")
 
 # Number of top tracks to include per artist
 TRACKS_PER_ARTIST = 1
