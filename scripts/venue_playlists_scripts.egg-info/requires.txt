@@ -1,4 +1,0 @@
-venue-playlists-api
-pyyaml
-requests
-beautifulsoup4

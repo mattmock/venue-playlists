@@ -1,8 +1,0 @@
-Metadata-Version: 2.2
-Name: venue-playlists-scripts
-Version: 0.1.0
-Requires-Dist: venue-playlists-api
-Requires-Dist: pyyaml
-Requires-Dist: requests
-Requires-Dist: beautifulsoup4
-Dynamic: requires-dist

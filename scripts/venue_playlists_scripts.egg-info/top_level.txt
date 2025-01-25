@@ -1,3 +1,0 @@
-playlist_data
-tests
-venue_data
