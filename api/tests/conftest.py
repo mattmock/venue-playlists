@@ -39,7 +39,30 @@ def client(app):
     return app.test_client()
 
 @pytest.fixture
-def sample_playlist(test_data_dir):
+def venue_config(test_data_dir):
+    """Create test venue configuration."""
+    venue_dir = test_data_dir / "venue-data" / "sf"
+    venue_dir.mkdir(parents=True, exist_ok=True)
+    venue_file = venue_dir / "venues.yaml"
+    venue_data = {
+        "venues": {
+            "the-independent": {
+                "name": "The Independent",
+                "description": "A historic music venue in San Francisco",
+                "scrapers": {
+                    "bandsintown": {
+                        "url": "https://www.bandsintown.com/v/the-independent"
+                    }
+                }
+            }
+        }
+    }
+    with open(venue_file, "w") as f:
+        yaml.dump(venue_data, f)
+    return venue_file
+
+@pytest.fixture
+def sample_playlist(test_data_dir, venue_config):
     """Create sample playlist."""
     playlist_dir = test_data_dir / "venue-data" / "sf" / "the-independent"
     playlist_dir.mkdir(parents=True, exist_ok=True)
@@ -64,7 +87,7 @@ def sample_playlist(test_data_dir):
     return playlist_file
 
 @pytest.fixture
-def test_playlist(test_data_dir):
+def test_playlist(test_data_dir, venue_config):
     """Create test playlist."""
     playlist_dir = test_data_dir / "venue-data" / "sf" / "the-independent"
     playlist_dir.mkdir(parents=True, exist_ok=True)

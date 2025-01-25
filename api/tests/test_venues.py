@@ -34,13 +34,13 @@ def test_load_venues(test_data_dir):
 
 def test_get_venues(client, sample_playlist, test_playlist):
     """Test venues endpoint returns correct structure."""
-    response = client.get('/venues')
+    response = client.get('/api/venues')
     assert response.status_code == 200
 
     # Test CORS headers
     assert 'Access-Control-Allow-Origin' in response.headers
     cors_origin = response.headers['Access-Control-Allow-Origin']
-    assert any(origin in cors_origin for origin in ['http://localhost:8000', 'http://127.0.0.1:8000'])
+    assert any(origin in cors_origin for origin in ['http://localhost:3000', 'http://localhost:8000'])
 
     data = response.get_json()
     assert "venues" in data
@@ -59,7 +59,7 @@ def test_venues_error_handling(app, client):
     """Test error handling for venues endpoint."""
     # Test with non-existent directory
     app.config["VENUE_DATA_DIR"] = "/nonexistent/path"
-    response = client.get('/venues')
+    response = client.get('/api/venues')
     assert response.status_code == 503
     data = response.get_json()
     assert "error" in data
@@ -72,5 +72,5 @@ def test_venues_error_handling(app, client):
     with open(venue_file, "w") as f:
         f.write("invalid: yaml: content")
 
-    response = client.get('/venues')
+    response = client.get('/api/venues')
     assert response.status_code == 500
