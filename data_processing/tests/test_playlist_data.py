@@ -18,7 +18,7 @@ The tests use fixtures from conftest.py for:
 - Test data directory management
 - Temporary output directory handling
 """
-from scripts.playlist_data import (
+from data_processing.playlist_data import (
     PlaylistGenerator,
     save_playlist_info
 )
@@ -31,9 +31,10 @@ logger = logging.getLogger(__name__)
 
 @pytest.fixture
 def generator():
-    """Fixture for playlist generator."""
+    """Fixture for playlist generator with non-interactive auth."""
     try:
-        generator = PlaylistGenerator()
+        # First try with interactive auth to get a new refresh token if needed
+        generator = PlaylistGenerator(use_auth_handler=True)
         assert generator.sp, "Spotify client not initialized"
         return generator
     except Exception as e:

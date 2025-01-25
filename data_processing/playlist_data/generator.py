@@ -12,7 +12,7 @@ class PlaylistGenerator:
     include_creation_time: bool
     sp: spotipy.Spotify
     
-    def __init__(self):
+    def __init__(self, use_auth_handler: bool = True):
         """Initialize the playlist generator with Spotify authentication."""
         self.playlist_prefix = ""  # Prefix for playlist names (e.g. "[TEST] ")
         self.include_creation_time = False  # Whether to include creation time in playlist description
@@ -29,7 +29,7 @@ class PlaylistGenerator:
             client_secret=config.SPOTIFY_CONFIG['client_secret'],
             redirect_uri='http://localhost:8888/callback',
             scope=config.SPOTIFY_CONFIG['scope'],
-            open_browser=False,
+            open_browser=use_auth_handler,
             cache_handler=None
         )
         

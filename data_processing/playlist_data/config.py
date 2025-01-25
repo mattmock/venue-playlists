@@ -18,7 +18,7 @@ SPOTIFY_CONFIG = {
     'client_id': os.environ.get('SPOTIFY_CLIENT_ID'),
     'client_secret': os.environ.get('SPOTIFY_CLIENT_SECRET'),
     'refresh_token': os.environ.get('SPOTIFY_REFRESH_TOKEN'),
-    'scope': 'playlist-modify-public'
+    'scope': 'playlist-modify-public playlist-modify-private user-read-private'
 }
 
 # Log configuration status (safely)
