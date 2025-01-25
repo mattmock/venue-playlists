@@ -1,5 +1,7 @@
 # Development Guide
 
+> For additional documentation, please see the [project wiki](../vp-wiki).
+
 ## Setup
 
 ### Prerequisites
@@ -50,7 +52,9 @@ python scripts/collect_events.py
 ### Project Structure
 ```
 venue-playlists/
-├── data/venue-data/    # Venue data files
+├── data/
+│   ├── examples/       # Example venue data files
+│   └── venue-data/    # Active venue data
 ├── logs/              # Application logs
 ├── scripts/           # CLI tools
 ├── venue_playlists_api/ # API package
@@ -59,7 +63,7 @@ venue-playlists/
 
 ## Data Structure
 
-Each venue needs a config in `data/venue-data/{city}/venues.yaml`:
+Example venue configuration (see `data/examples/sf/venues.yaml`):
 ```yaml
 venues:
   venue_key:
@@ -165,6 +169,7 @@ python scripts/venue_data/playlist_cleanup.py --playlist-id abc123
 1. Create Ubuntu droplet (512MB RAM minimum)
 2. Set up SSH access and basic security
 3. Install dependencies: Python 3.12, nginx, certbot
+4. Configure automated updates (see Infrastructure Runbook in wiki)
 
 ### Environment Setup
 1. Store production credentials in `/etc/venue-playlists/.env`:
@@ -192,6 +197,7 @@ Keep secure copies of:
 - Use `systemctl restart venue-playlists` to restart the service
 - Certbot auto-renews SSL certificates
 - Keep a copy of production credentials in Bitwarden
+- See Infrastructure Runbook in wiki for detailed procedures
 
 ### Website Deployment
 1. Generate data locally:
@@ -199,7 +205,7 @@ Keep secure copies of:
    python scripts/build_website_data.py
    ```
 
-2. Copy generated data to Vercel:
+2. Deploy to Vercel:
    ```bash
    # Create preview deployment (for testing)
    vercel deploy website/
@@ -209,4 +215,6 @@ Keep secure copies of:
    # Or deploy to production when ready
    vercel deploy website/ --prod
    # Production URL: venue-playlists.vercel.app
-   ``` 
+   ```
+
+For detailed deployment procedures and troubleshooting, see the Infrastructure Runbook in the project wiki. 

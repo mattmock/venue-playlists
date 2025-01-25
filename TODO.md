@@ -29,4 +29,4 @@
 ## Bugs
 - None tracked yet
 
-See `docs/roadmap/` for detailed future plans and features.
+See the project wiki for detailed future plans and features.
