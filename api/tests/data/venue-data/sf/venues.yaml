@@ -1,7 +1,0 @@
-venues:
-  the-independent:
-    description: A historic music venue in San Francisco
-    name: The Independent
-    scrapers:
-    - type: eventbrite
-      url: https://www.eventbrite.com/o/the-independent-sf
