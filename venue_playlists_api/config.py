@@ -3,6 +3,63 @@ import os
 from pathlib import Path
 from typing import Optional, Dict, Any
 
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv()
+
+# Base paths
+PROJECT_ROOT = Path(__file__).parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
+
+# Venue data configuration
+VENUE_DATA_DIR = str(os.getenv("VENUE_DATA_DIR", DATA_DIR / "venue-data"))
+EXAMPLE_DATA_DIR = str(DATA_DIR / "examples")
+
+# Ensure directories exist
+os.makedirs(VENUE_DATA_DIR, exist_ok=True)
+os.makedirs(EXAMPLE_DATA_DIR, exist_ok=True)
+
+# API Configuration
+FLASK_ENV = os.getenv("FLASK_ENV", "development")
+DEBUG = os.getenv("FLASK_DEBUG", "1") == "1"
+
+# CORS Configuration
+DEFAULT_ORIGINS = [
+    "http://localhost:3000",  # Development frontend
+    "http://localhost:8000",  # Local preview
+]
+
+if FLASK_ENV == "production":
+    DEFAULT_ORIGINS = [
+        "https://venue-playlists.vercel.app",
+        "https://*.venue-playlists.vercel.app"
+    ]
+
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", ",".join(DEFAULT_ORIGINS)).split(",")
+
+# Logging Configuration
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+LOG_DIR = str(os.getenv("LOG_DIR", PROJECT_ROOT / "logs"))
+os.makedirs(LOG_DIR, exist_ok=True)
+
+# Documentation of paths
+__doc__ = """
+Configuration for the Venue Playlists API.
+
+Directory Structure:
+- VENUE_DATA_DIR: Active venue data (default: <PROJECT_ROOT>/data/venue-data)
+- EXAMPLE_DATA_DIR: Example configurations (default: <PROJECT_ROOT>/data/examples)
+- LOG_DIR: Application logs (default: <PROJECT_ROOT>/logs)
+
+Environment Variables:
+- VENUE_DATA_DIR: Override the default venue data directory
+- LOG_DIR: Override the default log directory
+- LOG_LEVEL: Set logging level (default: INFO)
+- FLASK_ENV: Set environment (development/production)
+- FLASK_DEBUG: Enable debug mode (1/0)
+- ALLOWED_ORIGINS: Comma-separated list of allowed CORS origins
+"""
+
 def find_project_root() -> str:
     """Find the project root directory.
     
@@ -38,11 +95,10 @@ class BaseConfig:
     # Find project root by looking for key directories
     PROJECT_ROOT: str = find_project_root()
     
-    # Prioritize explicit VENUE_DATA_DIR, fallback to default project structure
-    VENUE_DATA_DIR: str = os.environ.get(
-        'VENUE_DATA_DIR',
-        str(Path(PROJECT_ROOT) / "data" / "venue-data")
-    )
+    # Data directories
+    VENUE_DATA_DIR: str = VENUE_DATA_DIR
+    EXAMPLE_DATA_DIR: str = EXAMPLE_DATA_DIR
+    LOG_DIR: str = LOG_DIR
     
     # Security settings
     SECRET_KEY: str = os.environ.get('SECRET_KEY', 'dev')
@@ -51,14 +107,10 @@ class BaseConfig:
     API_VERSION: str = '1.0'
     
     # CORS settings
-    CORS_ORIGINS: list[str] = [
-        "http://localhost:8000",
-        "http://127.0.0.1:8000",
-        "http://[::]:8000"
-    ]
+    CORS_ORIGINS: list[str] = ALLOWED_ORIGINS
     
     # Logging settings
-    LOG_LEVEL: str = 'INFO'
+    LOG_LEVEL: str = LOG_LEVEL
     LOG_FORMAT: str = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
 class DevelopmentConfig(BaseConfig):

@@ -1,25 +1,45 @@
-# Development
-.vscode/
-venv/
+# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
+.pytest_cache/
 
-# Generated data files
+# Generated Data
 data/venue-data/**/artists_*.yaml
 data/venue-data/**/playlist_*.yaml
-website/data/*.json
 
-# Keep venue configs
+# Keep venue configuration
 !data/venue-data/**/venues.yaml
+!data/examples/**/*.yaml
 
-# Authentication and credentials
-.env
+# Local development scripts
+scripts/get_spotify_token.py
+
+# Spotify authentication files
 .cache
 .spotify_token
-instance/
 
-# Runtime
-logs/
-.vercel
+# Generated venue data
+data/venue-data/
+
+# Jekyll output/build directory
+_site/
+.jekyll-cache/
+
+# Environment files
+.env
+.env.*
+!.env.example
+venv/
+
+# IDE
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+
+# Vercel
+.vercel/
+website/.vercel/
+website/data/venues.json
