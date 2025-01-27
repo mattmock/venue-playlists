@@ -2,21 +2,51 @@
 
 > For additional documentation, please see the [project wiki](../vp-wiki).
 
+## Tech Stack
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Python, Flask
+- **APIs**: Spotify Web API, OpenAI API
+- **Infrastructure**: 
+  - Vercel (frontend hosting)
+  - DigitalOcean (API & automation)
+  - Nginx (reverse proxy)
+- **Data**: YAML, JSON
+
 ## Setup
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.12 or higher
+- Poetry (Python package manager)
 - A Spotify Developer account
 - An OpenAI API key
 - Chrome/Chromium (for Selenium)
 
-### Configuration
-1. Copy `.env.example` to `.env`:
-```bash
-cp .env.example .env
-```
+### First-Time Setup
+1. Install Poetry:
+   ```bash
+   curl -sSL https://install.python-poetry.org | python3 -
+   ```
 
-2. Fill in your credentials in `.env`:
+2. Clone and set up the project:
+   ```bash
+   git clone git@github.com:yourusername/venue-playlists.git
+   cd venue-playlists
+   poetry install
+   ```
+
+3. Create and configure environment:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+
+4. Activate the virtual environment:
+   ```bash
+   poetry shell
+   ```
+
+### Configuration
+Required settings in `.env`:
 ```env
 # Required credentials
 SPOTIFY_CLIENT_ID=your_client_id
@@ -27,27 +57,49 @@ OPENAI_API_KEY=your_openai_api_key
 # Flask configuration (development defaults)
 FLASK_ENV=development
 
-# Scraper settings
+# Development settings
 PYTHONPATH=.
 LOGLEVEL=DEBUG
 SAVE_ALL_SCREENSHOTS=true
 ```
 
-### First-Time Setup
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+### Development Tools
+The project uses several development tools, all managed through Poetry:
 
-2. Run initial setup:
-```bash
-python scripts/collect_events.py
-```
+- **Black**: Code formatting
+  ```bash
+  poetry run black .
+  ```
 
-3. Start the servers using VS Code tasks:
-   - `Start API Server`: http://localhost:8080
-   - `Start Frontend Server`: http://localhost:8000
-   - Or use `Start All Servers` to launch both
+- **isort**: Import sorting
+  ```bash
+  poetry run isort .
+  ```
+
+- **Flake8**: Code linting
+  ```bash
+  poetry run flake8
+  ```
+
+- **MyPy**: Type checking
+  ```bash
+  poetry run mypy .
+  ```
+
+- **pytest**: Testing with coverage
+  ```bash
+  poetry run pytest
+  ```
+
+### VS Code Integration
+The project includes VS Code settings for:
+- Python interpreter selection
+- Test discovery and running
+- Code formatting on save
+- Import organization
+- Environment variable loading
+
+To use these features, install the Python extension for VS Code and reload the window after opening the project.
 
 ### Project Structure
 ```
@@ -56,7 +108,7 @@ venue-playlists/
 │   ├── examples/       # Example venue data files
 │   └── venue-data/    # Active venue data
 ├── logs/              # Application logs
-├── scripts/           # CLI tools
+├── data_processing/   # Data processing modules
 ├── venue_playlists_api/ # API package
 └── website/           # Static frontend
 ```

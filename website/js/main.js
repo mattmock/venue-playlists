@@ -6,27 +6,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function hasValidPlaylistData(venue) {
     return venue.months && 
-           Object.keys(venue.months).length > 0;
+           venue.months.length > 0;
 }
 
 async function loadVenues(retries = 3) {
     try {
-        const response = await fetch(`${config.apiUrl}/venues`);
+        const response = await fetch('/data/sf_venues.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        
-        // Get venues object from response
-        const venuesData = data.venues;
-        
-        // Convert to array and filter
-        const venuesWithPlaylists = Object.entries(venuesData)
-            .map(([key, venue]) => ({
-                id: key,
-                ...venue
-            }))
-            .filter(hasValidPlaylistData);
+        const venuesWithPlaylists = await response.json();
         
         const venueGrid = document.getElementById('venue-grid');
         venueGrid.innerHTML = ''; // Clear existing content
@@ -41,25 +30,24 @@ async function loadVenues(retries = 3) {
         
         // Calculate total number of iframes
         totalIframes = venuesWithPlaylists.reduce((acc, venue) => 
-            acc + Object.keys(venue.months).length, 0);
+            acc + venue.months.length, 0);
         loadedIframes = 0; // Reset counter
         
         venuesWithPlaylists.forEach(venue => {
             const card = createVenueCard(venue);
             venueGrid.appendChild(card);
         });
+        
     } catch (error) {
+        console.log(`Retrying... ${retries} attempts left`);
         if (retries > 0) {
-            console.log(`Retrying... ${retries} attempts left`);
-            await new Promise(r => setTimeout(r, 1000));
-            return loadVenues(retries - 1);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await loadVenues(retries - 1);
+        } else {
+            console.error('Error loading venues:', error);
+            const venueGrid = document.getElementById('venue-grid');
+            venueGrid.innerHTML = '<div class="error-message">Failed to load venues. Please try again later.</div>';
         }
-        console.error('Error loading venues:', error);
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = `Failed to load venue data: ${error.message}`;
-        document.getElementById('venue-grid').innerHTML = '';
-        document.getElementById('venue-grid').appendChild(errorDiv);
     }
 }
 
@@ -72,18 +60,13 @@ function createVenueCard(venue) {
     title.textContent = venue.name;
     card.appendChild(title);
     
-    const description = document.createElement('p');
-    description.className = 'venue-description';
-    description.textContent = venue.description || '';
-    card.appendChild(description);
-    
     const monthSections = document.createElement('div');
     monthSections.className = 'month-sections';
     
     // Sort months chronologically
-    const sortedMonths = Object.entries(venue.months).sort(([aKey], [bKey]) => {
-        const [aMonth, aYear] = aKey.split('_');
-        const [bMonth, bYear] = bKey.split('_');
+    const sortedMonths = venue.months.sort((a, b) => {
+        const [aMonth, aYear] = a.name.split('_');
+        const [bMonth, bYear] = b.name.split('_');
         
         // Compare years first
         if (aYear !== bYear) {
@@ -96,8 +79,8 @@ function createVenueCard(venue) {
         return months.indexOf(aMonth.toLowerCase()) - months.indexOf(bMonth.toLowerCase());
     });
     
-    sortedMonths.forEach(([monthKey, monthData], index) => {
-        const section = createMonthSection(monthKey, monthData, index === 0);
+    sortedMonths.forEach((monthData, index) => {
+        const section = createMonthSection(monthData.name, monthData, index === 0);
         monthSections.appendChild(section);
     });
     
@@ -162,8 +145,8 @@ function getPlaylistId(url) {
 
 function togglePlaylist(element) {
     const container = element.nextElementSibling;
-    const arrow = element.querySelector('.arrow');
     container.classList.toggle('collapsed');
+    const arrow = element.querySelector('.arrow');
     arrow.textContent = container.classList.contains('collapsed') ? '▶' : '▼';
 }
 

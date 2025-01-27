@@ -28,18 +28,8 @@ Visit [venue-playlists.vercel.app](https://venue-playlists.vercel.app) to:
 - Discover upcoming artists
 - Find your next show
 
-## Development
-See the [Development Guide](DEVELOPMENT.md) and [project wiki](../vp-wiki) for:
-- Setup instructions
-- Development workflow
-- Deployment procedures
-- Infrastructure details
-
-## About
-Built by [Matt Mock](https://github.com/mattmock) to make discovering local music easier.
-
 ## Tech Stack
-- **Frontend**: HTML, CSS, JavaScript, HTMX
+- **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Python, Flask
 - **APIs**: Spotify Web API, OpenAI API
 - **Infrastructure**: 
@@ -47,3 +37,9 @@ Built by [Matt Mock](https://github.com/mattmock) to make discovering local musi
   - DigitalOcean (API & automation)
   - Nginx (reverse proxy)
 - **Data**: YAML, JSON
+
+## Development
+See the [Development Guide](DEVELOPMENT.md) and [project wiki](../vp-wiki) for setup and contribution details.
+
+## About
+Built by [Matt Mock](https://github.com/mattmock) to make discovering local music easier.
